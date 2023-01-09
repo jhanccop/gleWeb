@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} KPI {% endblock title %}
+
+{% block company %} {{ CompanyName }} {% endblock company %}
+{% block app %}  KPI - RunLife {% endblock app %}
+{% block PumpType %}  {% endblock PumpType %}
+{% block PumpName %}  {% endblock PumpName %}
+
+{% block content %}
+
+{% for field in object_list.data %}
+<div class="row mt-4">
+
+    <!-- Deferment TABLE -->
+    <div class="col-lg-12 col-md-12">
+        <div class="card h-100">
+
+            <div class="col-12">
+                <div class="card">
+                    <!-- Card header -->
+                    <div class="card-header pb-0 p-3">
+                        <h5 class="mb-0">{{ field.FieldName }}</h5>
+                        <p> <span>Run Life by month</span> </p>
+                    </div>
+                    <div class="table-responsive h-100">
+                        <table class="table table-flush" id="datatable-{{field.FieldName}}">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pump Name</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Installation</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">First start</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Failure date</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Failure Diagnosis</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"># Failures</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pull Out</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Run Life</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for well_i in field.data %}
+                                <tr>
+                                    <td class="text-sm font-weight-normal">{{well_i.PumpName__PumpName}}</td>
+                                    <td class="text-sm font-weight-normal">{{well_i.PumpName__InstallationDate|safe}}</td>
+                                    <td class="text-sm font-weight-normal">--</td>
+                                    <td class="text-sm font-weight-normal">{{well_i.DateFailure|safe}}</td>
+                                    <td class="text-sm font-weight-normal">{{well_i.FailureDiagnosis}}</td>
+                                    <td class="text-sm font-weight-normal">{{well_i.Count_failures}}</td>
+                                    <td class="text-sm font-weight-normal">{{well_i.PullOut|safe}}</td>
+                                    <td class="text-sm font-weight-normal">{{well_i.RunLife}}</td>
+                                </tr>
+                                {% endfor %}
+                                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div> 
+
+{% endfor %}
+
+{% endblock content %}
+
+{% block JSscripts %}
+
+<script src="{% static 'assets/js/plugins/datatables.js' %}"></script>
+<!--Table 1-->
+<script>
+    
+    //dataTableBasic1
+    var tables = {};
+    '{% for field_i in object_list.data %}'
+    tables["{{field_i.FieldName}}"] = new simpleDatatables.DataTable("#datatable-{{field_i.FieldName}}", {
+        searchable: true,
+        fixedHeight: true,
+        perPage: 5
+    });
+
+    '{% endfor %}'
+    /*
+    const dataTableBasic1 = new simpleDatatables.DataTable("#datatable-FieldA", {
+        searchable: true,
+        fixedHeight: true,
+        perPage: 5
+    });
+    */
+
+</script>
+
+{% endblock JSscripts %}

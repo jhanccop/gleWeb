@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} Smart Alarms {% endblock title %}
+
+{% block company %} {{ CompanyName }} {% endblock company %}
+{% block app %}  Smart Alarms {% endblock app %}
+{% block PumpType %}  {% endblock PumpType %}
+{% block PumpName %}  {% endblock PumpName %}
+
+{% block content %}
+
+<!-- ESP TABLE -->
+<div class="row">
+    <div class="col-12">
+        <div class="card ">
+            <!-- Card header -->
+            <div class="card-header pb-0 p-3">
+                <h5 class="mb-0">ESP</h5>
+                <p class="text-sm mb-0">
+                    Electric Submersible Pump
+                </p>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-flush" id="datatable-basic1">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Field</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Well Name</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Event</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Diagnosis</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Prediction</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">E. I.</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Recomendation</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Trip Attendance/th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for well in object_list.espSA %}
+                        <tr>
+                            
+                            <td class="text-sm font-weight-normal">{{well.Field}}</td>
+                            <td class="text-sm font-weight-normal">{{well.PumpName}}</td>
+                            <td class="text-sm font-weight-normal">{{well.Event}}</td>
+                            <td class="text-sm font-weight-normal">{{well.Diagnosis}}</td>
+                            <td class="text-sm font-weight-normal">{{well.Prediction}}</td>
+                            <td class="text-sm font-weight-normal">{{well.EI}}</td>
+                            <td class="text-sm font-weight-normal">{{well.Recomendation}}</td>
+                            <td class="text-sm font-weight-normal">{{well.TripAttendance}}</td>
+                            
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SRP TABLE -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <!-- Card header -->
+            <div class="card-header pb-0 p-3">
+                <h5 class="mb-0">SRP</h5>
+                <p class="text-sm mb-0">
+                    Sucker Rod Pump
+                </p>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-flush" id="datatable-basic2">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Date Time</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Field</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Well Name</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Event</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Diagnosis</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Recomendation</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Trip Attendance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for well in object_list.rodpumpSA %}
+                        <tr>
+                            <td class="text-sm font-weight-normal">{{well.DateTime}}</td>
+                            <td class="text-sm font-weight-normal">{{well.Field}}</td>
+                            <td class="text-sm font-weight-normal">{{well.PumpName}}</td>
+                            <td class="text-sm font-weight-normal">{{well.Event}}</td>
+                            <td class="text-sm font-weight-normal">{{well.Diagnosis}}</td>
+                            <td class="text-sm font-weight-normal">{{well.Recomendation}}</td>
+                            <td class="text-sm font-weight-normal">{{well.TripAttendance}}</td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block JSscripts %}
+<script src="{% static 'assets/js/plugins/datatables.js' %}"></script>
+
+<!--Table 1-->
+<script>
+    const dataTableBasic1 = new simpleDatatables.DataTable("#datatable-basic1", {
+        searchable: true,
+        fixedHeight: true
+    });
+
+    const dataTableSearch1 = new simpleDatatables.DataTable("#datatable-search1", {
+        searchable: true,
+        fixedHeight: true
+    });
+</script>
+
+<!--Table 2-->
+<script>
+    const dataTableBasic2 = new simpleDatatables.DataTable("#datatable-basic2", {
+        searchable: true,
+        fixedHeight: true
+    });
+
+    const dataTableSearch2 = new simpleDatatables.DataTable("#datatable-search2", {
+        searchable: true,
+        fixedHeight: true
+    });
+</script>
+{% endblock JSscripts %}

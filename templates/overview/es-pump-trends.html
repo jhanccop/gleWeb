@@ -1,0 +1,1117 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} ESP - trends {% endblock title %}
+{% block company %} {{ CompanyName }} {% endblock company %}
+{% block app %} Overview {% endblock app %}
+{% block PumpType %} {{object_list.type}} - trends {% endblock PumpType %}
+{% block PumpName %} {{object_list.name}} {% endblock PumpName %}
+
+{% block content %}
+
+<!-- local navbar -->
+<div class="nav-wrapper position-relative end-0">
+    <ul class="nav nav-pills nav-fill pb-0 bg-transparent" role="tablist">
+
+        <!-- Operation -->
+        <li class="nav-item">
+            <a class="btn bg-gray-400 w-100 text-lg" href="/overview/electrical-submersible-pump/operation/{{object_list.name}}" role="button">
+                <i class="fas fa-project-diagram me-2 text-lg"></i>
+                Operation
+            </a>
+        </li>
+
+        <!-- Trends -->
+        <li class="nav-item">
+            <a class="btn bg-gradient-danger w-100 active text-lg" href="/overview/electrical-submersible-pump/trends/{{object_list.name}}" role="button">
+                
+                <i class="fas fa-chart-line me-2 text-sm"></i>Trends
+            </a>
+        </li>
+
+        <!-- Troubleshoot -->
+        <li class="nav-item">
+            <a class="btn bg-gray-400 w-100 text-lg" href="/overview/electrical-submersible-pump/troubleshoot/{{object_list.name}}" role="button"
+                aria-controls="Troubleshoot" aria-selected="false">
+                <i class="fas fa-toolbox me-2 text-sm"></i>
+                Troubleshoot
+            </a>
+        </li>
+
+        <!-- Optimization -->
+        <li class="nav-item">
+            <a class="btn bg-gray-400 w-100 text-lg" href="/overview/electrical-submersible-pump/optimization/{{object_list.name}}" role="button"
+                aria-controls="Optimization" aria-selected="false">
+                <i class="fas fa-chart-bar me-2 text-sm"></i>
+                Optimization
+            </a>
+        </li>
+
+        <!-- Test -->
+        <li class="nav-item">
+            <a class="btn bg-gray-400 w-100 text-lg" href="/overview/electrical-submersible-pump/test/{{object_list.name}}" role="button"
+                aria-controls="Test" aria-selected="false">
+                <i class="fas fa-wrench me-2 text-sm"></i>
+                Test
+            </a>
+        </li>
+
+        <!-- Inputs -->
+        <li class="nav-item">
+            <a class="btn bg-gray-400 w-100 text-lg" href="/overview/electrical-submersible-pump/inputs/{{object_list.name}}" role="tab"
+                aria-controls="Inputs" aria-selected="false">
+                <i class="fas fa-edit me-2 text-sm"></i>
+                Inputs
+            </a>
+        </li>
+
+    </ul>
+
+</div>
+
+<hr class="horizontal dark my-0">
+
+<!-- Consult form -->
+<div class="row mt-2">
+    
+    <div class="col-xl-4 col-sm-2 mb-xl-0 mb-4">
+        <button class="btn bg-gradient-dark dropdown-toggle" type="button" id="dropdownImport"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            Today
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownImport">
+            <li><a class="dropdown-item" href="javascript:;">Yesterday</a></li>
+            <li><a class="dropdown-item" href="javascript:;">Last 7 days</a></li>
+            <li><a class="dropdown-item" href="javascript:;">Last 30 days</a></li>
+        </ul>
+    </div>
+
+    <div class="col-xl-4 col-sm-4 mb-xl-0 mb-4">
+        <div class="dropleft">
+            <form method="GET">{% csrf_token %}
+                <div class="row">
+                    <div class="col-xl-8 col-sm-8">
+                        <input class="form-control datetimepicker text-center" value="{{object_list.date}}" type="text" placeholder="today" id="dateKword" name="dateKword" />
+                    </div>
+                    <div class="col-xl-4 col-sm-4">
+                        <button class="btn bg-gradient-primary" type="submit"> Consult </button>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-sm-4 mb-xl-0 ">
+        <div class="numbers ">
+            <h6 class="font-weight-bolder float-end text-sx">Last Update:&nbsp;&nbsp;<span class="text-lg"  id = "LastUpdate"></span> </h6>
+        </div>
+        
+    </div>
+
+</div>
+
+<div class="row">
+
+    <!-- Motor Current -->
+    <div class="col-lg-6 mt-lg-0 mt-4">
+        <div class="card overflow-hidden">
+            <div class="card-header p-3 pb-0">
+                <div class="d-flex align-items-center">
+                    <div class="icon icon-shape bg-gradient-danger shadow text-center border-radius-md">
+                        <i class="fas fa-bolt text-lg opacity-10" aria-hidden="true"></i>
+
+                    </div>
+                    <div class="ms-3">
+                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Motor Current</p>
+                        <h5 class="font-weight-bolder mb-0">
+                            <span id="valMotorCurrent">--</span> <span> A</span>
+                        </h5>
+
+                    </div>
+
+                    <div class="progress-wrapper ms-auto w-40">
+                        <div class="progress-info">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <span class="text-sm font-weight-bold ">Min: 100</span>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <span class="text-sm font-weight-bold text-center">Max: 200</span>
+                                </div>
+
+                            </div>
+
+
+                            <div class="progress-percentage">
+                                <span class="text-sm font-weight-bold" id="valMotorCurrent1" >--</span>
+                            </div>
+                        </div>
+                        <div class="progress">
+                            <div class="valMotorCurrent progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="200"
+                                aria-valuemin="100" aria-valuemax="200" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="card-body mt-3 p-0">
+                <div class="chart">
+                    <div ui-jp="plot" id="MotorCurrent-plot" style="height: 200px;"></div>
+                    <!--
+                    <canvas id="MotorCurrent" class="chart-canvas" height="100"></canvas>
+                    -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Motor voltage -->
+    <div class="col-lg-6 mt-lg-0 mt-4">
+        <div class="card overflow-hidden">
+            <div class="card-header p-3 pb-0">
+                <div class="d-flex align-items-center">
+                    <div class="icon icon-shape bg-gradient-danger shadow text-center border-radius-md">
+                        <i class="fas fa-plug text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                    <div class="ms-3">
+                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Motor voltage</p>
+                        <h5 class="font-weight-bolder mb-0">
+                            <span id="valMotorVoltage">--</span> <span> V</span>
+                        </h5>
+                        
+                    </div>
+
+                    <div class="progress-wrapper ms-auto w-40">
+                        <div class="progress-info">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <span class="text-sm font-weight-bold ">Min: 240</span>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <span class="text-sm font-weight-bold text-center">Max: 380</span>
+                                </div>
+
+                            </div>
+                           
+                            
+                            <div class="progress-percentage">
+                                <span class="text-sm font-weight-bold" id="valMotorVoltage1">--</span>
+                            </div>
+                        </div>
+                        <div class="progress">
+                            <div class="valMotorVoltage progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="60" aria-valuemin="240"
+                                aria-valuemax="380" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+            <div class="card-body mt-3 p-0">
+                <div class="chart">
+                    <div ui-jp="plot" id="MotorVoltage-plot" style="height: 200px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <!-- Motor Power -->
+    <div class="col-lg-6 mt-lg-0 mt-4">
+        <div class="card overflow-hidden">
+            <div class="card-header p-3 pb-0">
+                <div class="d-flex align-items-center">
+                    <div class="icon icon-shape bg-gradient-danger shadow text-center border-radius-md">
+                        <i class="fas fa-cogs text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                    <div class="ms-3">
+                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Motor Power</p>
+                        <h5 class="font-weight-bolder mb-0">
+                            <span id="valMotorPower">--</span> <span> W</span>
+                        </h5>
+
+                    </div>
+
+                    <div class="progress-wrapper ms-auto w-40">
+                        <div class="progress-info">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <span class="text-sm font-weight-bold ">Min: 40</span>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <span class="text-sm font-weight-bold text-center">Max: 80</span>
+                                </div>
+
+                            </div>
+
+                            <div class="progress-percentage">
+                                <span class="text-sm font-weight-bold" id="valMotorPower1">--</span>
+                            </div>
+                        </div>
+                        <div class="progress">
+                            <div class="valMotorPower progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="60"
+                                aria-valuemin="40" aria-valuemax="80" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="card-body mt-3 p-0">
+                <div class="chart">
+                    <div ui-jp="plot" id="MotorPower-plot" style="height: 200px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Motor Temperature -->
+    <div class="col-lg-6 mt-lg-0 mt-4">
+        <div class="card overflow-hidden">
+            <div class="card-header p-3 pb-0">
+                <div class="d-flex align-items-center">
+                    <div class="icon icon-shape bg-gradient-danger shadow text-center border-radius-md">
+                        <i class="fas fa-thermometer-half text-lg opacity-10" aria-hidden="true"></i>
+                        
+                    </div>
+                    <div class="ms-3">
+                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Motor Temperature</p>
+                        <h5 class="font-weight-bolder mb-0">
+                            <span id="valMotorTemperature">--</span> <span> F</span>
+                        </h5>
+
+                    </div>
+
+                    <div class="progress-wrapper ms-auto w-40">
+                        <div class="progress-info">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <span class="text-sm font-weight-bold ">Min: 800</span>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <span class="text-sm font-weight-bold text-center">Max: 900</span>
+                                </div>
+
+                            </div>
+
+
+                            <div class="progress-percentage">
+                                <span class="text-sm font-weight-bold" id="valMotorTemperature1">--</span>
+                            </div>
+                        </div>
+                        <div class="progress">
+                            <div class="valMotorTemperature progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="60"
+                                aria-valuemin="800" aria-valuemax="900" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="card-body mt-3 p-0">
+                <div class="chart">
+                    <div ui-jp="plot" id="MotorTemperature-plot" style="height: 200px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <!-- Motor Frequency -->
+    <div class="col-lg-6 mt-lg-0 mt-4">
+        <div class="card overflow-hidden">
+            <div class="card-header p-3 pb-0">
+                <div class="d-flex align-items-center">
+                    <div class="icon icon-shape bg-gradient-danger shadow text-center border-radius-md">
+                        <i class="fas fa-wave-square  text-lg opacity-10"></i>
+
+
+                    </div>
+                    <div class="ms-3">
+                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Motor Frequency</p>
+                        <h5 class="font-weight-bolder mb-0">
+                            <span id="valMotorFrequency">--</span> <span> Hz</span>
+                        </h5>
+
+                    </div>
+
+                    <div class="progress-wrapper ms-auto w-40">
+                        <div class="progress-info">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <span class="text-sm font-weight-bold ">Min: 40</span>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <span class="text-sm font-weight-bold text-center">Max: 80</span>
+                                </div>
+
+                            </div>
+
+                            <div class="progress-percentage">
+                                <span class="text-sm font-weight-bold" id="valMotorFrequency1">--</span>
+                            </div>
+                        </div>
+                        <div class="progress">
+                            <div class="valMotorFrequency progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="60"
+                                aria-valuemin="40" aria-valuemax="80" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="card-body mt-3 p-0">
+                <div class="chart">
+                    <div ui-jp="plot" id="MotorFrequency-plot" style="height: 200px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Head pressure -->
+    <div class="col-lg-6 mt-lg-0 mt-4">
+        <div class="card overflow-hidden">
+            <div class="card-header p-3 pb-0">
+                <div class="d-flex align-items-center">
+                    <div class="icon icon-shape bg-gradient-danger shadow text-center border-radius-md">
+                        <i class="fas fa-tachometer-alt text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                    <div class="ms-3">
+                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Head pressure</p>
+                        <h5 class="font-weight-bolder mb-0">
+                            <span id="valHeadPressure">--</span> <span> psi</span>
+                        </h5>
+
+                    </div>
+
+                    <div class="progress-wrapper ms-auto w-40">
+                        <div class="progress-info">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <span class="text-sm font-weight-bold ">Min: 40</span>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <span class="text-sm font-weight-bold text-center">Max: 80</span>
+                                </div>
+
+                            </div>
+
+                            <div class="progress-percentage">
+                                <span class="text-sm font-weight-bold" id="valHeadPressure1">--</span>
+                            </div>
+                        </div>
+                        <div class="progress">
+                            <div class="valHeadPressure progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="60"
+                                aria-valuemin="40" aria-valuemax="80" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="card-body mt-3 p-0">
+                <div class="chart">
+                    <div ui-jp="plot" id="HeadPressure-plot" style="height: 200px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+<div class="row  mt-4">
+    <!-- Head temperature -->
+    <div class="col-lg-6 mt-lg-0 mt-4">
+        <div class="card overflow-hidden">
+            <div class="card-header p-3 pb-0">
+                <div class="d-flex align-items-center">
+                    <div class="icon icon-shape bg-gradient-danger shadow text-center border-radius-md">
+                        <i class="fas fa-thermometer-half text-lg opacity-10"></i>
+                    </div>
+                    <div class="ms-3">
+                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Head Temperature</p>
+                        <h5 class="font-weight-bolder mb-0">
+                            <span id="valHeadTemperature">--</span> <span> F</span>
+                        </h5>
+
+                    </div>
+
+                    <div class="progress-wrapper ms-auto w-40">
+                        <div class="progress-info">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <span class="text-sm font-weight-bold ">Min: 50</span>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <span class="text-sm font-weight-bold text-center">Max: 150</span>
+                                </div>
+
+                            </div>
+
+                            <div class="progress-percentage">
+                                <span class="text-sm font-weight-bold" id="valHeadTemperature1">--</span>
+                            </div>
+                        </div>
+                        <div class="progress">
+                            <div class="valHeadTemperature progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="60"
+                                aria-valuemin="50" aria-valuemax="150" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="card-body mt-3 p-0">
+                <div class="chart">
+                    <div ui-jp="plot" id="HeadTemperature-plot" style="height: 200px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- casing pressure -->
+    <div class="col-lg-6 mt-lg-0 mt-4">
+        <div class="card overflow-hidden">
+            <div class="card-header p-3 pb-0">
+                <div class="d-flex align-items-center">
+                    <div class="icon icon-shape bg-gradient-danger shadow text-center border-radius-md">
+                        <i class="fas fa-tachometer-alt text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                    <div class="ms-3">
+                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Casing Pressurey</p>
+                        <h5 class="font-weight-bolder mb-0">
+                            <span id="valCasingPressure">--</span> <span> psi</span>
+                        </h5>
+
+                    </div>
+
+                    <div class="progress-wrapper ms-auto w-40">
+                        <div class="progress-info">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <span class="text-sm font-weight-bold ">Min: 40</span>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <span class="text-sm font-weight-bold text-center">Max: 80</span>
+                                </div>
+
+                            </div>
+
+                            <div class="progress-percentage">
+                                <span class="text-sm font-weight-bold" id="valCasingPressure1">--</span>
+                            </div>
+                        </div>
+                        <div class="progress">
+                            <div class="valCasingPressure progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="60"
+                                aria-valuemin="40" aria-valuemax="80" style="width: 00%;"></div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="card-body mt-3 p-0">
+                <div class="chart">
+                    <div ui-jp="plot" id="CasingPressure-plot" style="height: 200px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row  mt-4">
+    <!-- Flow Line pressure -->
+    <div class="col-lg-6 mt-lg-0 mt-4">
+        <div class="card overflow-hidden">
+            <div class="card-header p-3 pb-0">
+                <div class="d-flex align-items-center">
+                    <div class="icon icon-shape bg-gradient-danger shadow text-center border-radius-md">
+                        <i class="fas fa-tachometer-alt text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                    <div class="ms-3">
+                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Flow Line Pressure</p>
+                        <h5 class="font-weight-bolder mb-0">
+                            <span id="valFlowlinePressure">--</span> <span> psi</span>
+                        </h5>
+
+                    </div>
+
+                    <div class="progress-wrapper ms-auto w-40">
+                        <div class="progress-info">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <span class="text-sm font-weight-bold ">Min: 40</span>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <span class="text-sm font-weight-bold text-center">Max: 80</span>
+                                </div>
+
+                            </div>
+
+                            <div class="progress-percentage">
+                                <span class="text-sm font-weight-bold" id="valFlowlinePressure1">--</span>
+                            </div>
+                        </div>
+                        <div class="progress">
+                            <div class="valFlowlinePressure progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="60"
+                                aria-valuemin="40" aria-valuemax="80" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="card-body mt-3 p-0">
+                <div class="chart">
+                    <div ui-jp="plot" id="FlowlinePressure-plot" style="height: 200px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pump intake pressure -->
+    <div class="col-lg-6 mt-lg-0 mt-4">
+        <div class="card overflow-hidden">
+            <div class="card-header p-3 pb-0">
+                <div class="d-flex align-items-center">
+                    <div class="icon icon-shape bg-gradient-danger shadow text-center border-radius-md">
+                        <i class="fas fa-tachometer-alt text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                    <div class="ms-3">
+                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Pump Intake Pressure </p>
+                        <h5 class="font-weight-bolder mb-0">
+                            <span id="valPumpIntakePressure">--</span><span> psi</span>
+                        </h5>
+
+                    </div>
+
+                    <div class="progress-wrapper ms-auto w-40">
+                        <div class="progress-info">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <span class="text-sm font-weight-bold ">Min: 100</span>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <span class="text-sm font-weight-bold text-center">Max: 200</span>
+                                </div>
+
+                            </div>
+
+                            <div class="progress-percentage">
+                                <span class="text-sm font-weight-bold" id="valPumpIntakePressure1">--</span>
+                            </div>
+                        </div>
+                        <div class="progress">
+                            <div class="valPumpIntakePressure progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="60"
+                                aria-valuemin="100" aria-valuemax="200" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="card-body mt-3 p-0">
+                <div class="chart">
+                    <div ui-jp="plot" id="PumpIntakePressure-plot" style="height: 200px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- historical data -->
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <!-- Card header -->
+            <div class="card-header pb-0 p-3">
+                <h5 class="mb-0">Historical Events</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-flush" id="datatable-basic1">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Event</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Diagnosis</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Prediction</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Recomendation</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Trip Attendance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for event in object_list.event %}
+                        <tr>
+                            <td class="text-sm font-weight-normal">{{event.WellEvent}}</td>
+                            <td class="text-sm font-weight-normal">{{event.WellDiagnosis}}</td>
+                            <td class="text-sm font-weight-normal">{{event.WellPrediction}}</td>
+                            <td class="text-sm font-weight-normal">--</td>
+                            <td class="text-sm font-weight-normal">{{event.WellTripAttendant}}</td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block JSscripts %}
+
+<script src="{% static '/assets/js/plugins/chartjs.min.js' %}"></script>
+<script src="{% static 'assets/js/plugins/plotly-2.12.1.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.js' %}"></script>
+<script>
+
+    //================ Motor Current ==========================
+    //var ctx1 = document.getElementById("MotorCurrent").getContext("2d");
+
+    //var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
+
+    //gradientStroke1.addColorStop(1, 'rgba(33,82,255,0.1)');
+    //gradientStroke1.addColorStop(0.2, 'rgba(33,82,255,0.0)');
+    //gradientStroke1.addColorStop(0, 'rgba(33,82,255,0)'); //purple colors
+
+    // ================== structure all data ====================
+    var MotorCurrent = [];
+    var MotorVoltage = [];
+    var MotorPower = [];
+    var MotorTemperature = [];
+    var MotorFrequency = [];
+    var HeadPressure = [];
+    var HeadTemperature = [];
+    var CasingPressure = [];
+    var FlowlinePressure = [];
+    var PumpIntakePressure = [];
+    var dateTime = [];
+
+    '{% for well in object_list.data %}'
+
+        var ddt = new Date("{{well.DateCreate|date:'Y-m-d H:i'}}");
+        dateTime.push(ddt);
+
+        //MotorCurrent.push('{{well.MotorCurrent}}');
+        MotorCurrent.push('{{well.MotorCurrent}}');
+        MotorVoltage.push('{{well.MotorVoltage}}');
+        MotorPower.push('{{well.MotorPower}}');
+        MotorTemperature.push('{{well.MotorTemperature}}');
+        MotorFrequency.push('{{well.MotorFrequency}}');
+        HeadPressure.push('{{well.HeadPressure}}');
+        HeadTemperature.push('{{well.HeadTemperature}}');
+        CasingPressure.push('{{well.CasingPressure}}');
+        FlowlinePressure.push('{{well.FlowlinePressure}}');
+        PumpIntakePressure.push('{{well.PumpIntakePressure}}');
+        
+    '{% endfor %}'
+
+    function dtFormat(dateTime) {
+        var dd = dateTime.getDate();
+        var yyyy = dateTime.getFullYear();
+        var mm = dateTime.getMonth() + 1;
+
+        mm = (mm < 10 ? '0' : '') + mm;
+        dd = (dd < 10 ? '0' : '') + dd;
+
+        // Now setting up Time Format (hh:mm:ss)
+        var hr = dateTime.getHours();
+        var min = dateTime.getMinutes();
+        var sec = dateTime.getSeconds();
+
+        hr = (hr < 10 ? '0' : '') + hr;
+        min = (min < 10 ? '0' : '') + min;
+        sec = (sec < 10 ? '0' : '') + sec;
+        var dt = yyyy + "-" + mm + "-" + dd + " " + hr + ":" + min + ":" + sec;
+        return dt;
+    }
+
+    //================ update values ====================
+    
+    $("#LastUpdate").html(dtFormat(dateTime[0]));
+
+    //==== Motor Current ====
+    $("#valMotorCurrent").html(MotorCurrent[0]);
+    $("#valMotorCurrent1").html(MotorCurrent[0]);
+    var per = String(MotorCurrent[0] - 100)+'%'; 
+    $('.valMotorCurrent').css('width', per);
+
+    //==== Motor Current ====
+    $("#valMotorVoltage").html(MotorVoltage[0]);
+    $("#valMotorVoltage1").html(MotorVoltage[0]);
+    per = String(MotorVoltage[0])+'%'; 
+    $('.valMotorVoltage').css('width', per);
+
+    //==== MotorPower ====
+    $("#valMotorPower").html(MotorPower[0]);
+    $("#valMotorPower1").html(MotorPower[0]);
+    per = String(MotorPower[0])+'%'; 
+    $('.valMotorPower').css('width', per);
+
+    //==== MotorTemperature ====
+    $("#valMotorTemperature").html(MotorTemperature[0]);
+    $("#valMotorTemperature1").html(MotorTemperature[0]);
+    per = String(MotorTemperature[0]-800)+'%'; 
+    $('.valMotorTemperature').css('width', per);
+    
+    //==== MotorFrequency ====
+    $("#valMotorFrequency").html(MotorFrequency[0]);
+    $("#valMotorFrequency1").html(MotorFrequency[0]);
+    per = String(2.5*MotorFrequency[0]-100)+'%'; 
+    $('.valMotorFrequency').css('width', per);
+
+    //==== HeadPressure ====
+    $("#valHeadPressure").html(HeadPressure[0]);
+    $("#valHeadPressure1").html(HeadPressure[0]);
+    per = String(HeadPressure[0])+'%'; 
+    $('.valHeadPressure').css('width', per);
+
+    //==== HeadTemperature ====
+    $("#valHeadTemperature").html(HeadTemperature[0]);
+    $("#valHeadTemperature1").html(HeadTemperature[0]);
+    per = String(HeadTemperature[0]-50)+'%'; 
+    $('.valHeadTemperature').css('width', per);
+
+    //==== CasingPressure ====
+    $("#valCasingPressure").html(CasingPressure[0]);
+    $("#valCasingPressure1").html(CasingPressure[0]);
+    per = String(CasingPressure[0])+'%'; 
+    $('.valCasingPressure').css('width', per);
+
+    //==== FlowlinePressure ====
+    $("#valFlowlinePressure").html(FlowlinePressure[0]);
+    $("#valFlowlinePressure1").html(FlowlinePressure[0]);
+    per = String(FlowlinePressure[0])+'%'; 
+    $('.valFlowlinePressure').css('width', per);
+
+    //==== PumpIntakePressure ====
+    $("#valPumpIntakePressure").html(PumpIntakePressure[0]);
+    $("#valPumpIntakePressure1").html(PumpIntakePressure[0]);
+    per = String(PumpIntakePressure[0]-100)+'%'; 
+    $('.valPumpIntakePressure').css('width', per);
+
+    /*
+    $("#MotorVoltage").html(MotorVoltage[0]["y"]);
+    $("#MotorPower").html(MotorPower[0]["y"]);
+    $("#MotorTemperature").html(MotorTemperature[0]["y"]);
+    $("#MotorFrequency").html(MotorFrequency[0]["y"]);
+    $("#HeadPressure").html(HeadPressure[0]["y"]);
+    $("#HeadTemperature").html(HeadTemperature[0]["y"]);
+    $("#CasingPressure").html(CasingPressure[0]["y"]);
+    $("#FlowlinePressure").html(FlowlinePressure[0]["y"]);
+    $("#PumpIntakePressure").html(PumpIntakePressure[0]["y"]);
+    */
+   
+    /*
+    new Chart(ctx1, {
+        type: "line",
+        data: {
+            //labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            datasets: [{
+                label: "Tasks",
+                tension: 0.3,
+                pointRadius: 2,
+                pointBackgroundColor: "#cb0c9f",
+                borderColor: "#cb0c9f",
+                borderWidth: 2,
+                backgroundColor: gradientStroke1,
+                data: MotorCurrent,
+                maxBarThickness: 6,
+                fill: true
+            }],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false,
+                }
+            },
+            interaction: {
+                intersect: false,
+                mode: 'index',
+            },
+            scales: {
+                y: {
+                    grid: {
+                        drawBorder: false,
+                        display: false,
+                        drawOnChartArea: false,
+                        drawTicks: false,
+                    },
+                    ticks: {
+                        display: false
+                    }
+                },
+                x: {
+                    grid: {
+                        drawBorder: false,
+                        display: false,
+                        drawOnChartArea: false,
+                        drawTicks: false,
+                    },
+                    ticks: {
+                        color: '#252f40',
+                        padding: 10
+                    }
+                },
+            },
+        },
+    });
+    */
+    
+    var layout = {
+        //background : gradientStroke1,
+        showlegend: false,
+        legend: {
+            "orientation": "h",
+            x: 0.2,
+            xanchor: 'left',
+            y: 1
+        },
+
+        margin: {l:40,t:10,b:10,r:30},
+		autosize: true,
+
+        yaxis2: {
+            domain: [0.6, 0.95],
+            anchor: 'x2'
+        },
+        xaxis2: {
+            domain: [0.6, 0.95],
+            anchor: 'y2'
+        },
+        xaxis: {
+            autorange: true,
+            range: ['2015-02-17', '2017-02-16'],
+            rangeselector: {buttons: [
+                {
+                count: 1,
+                label: '1h',
+                step: 'hour',
+                stepmode: 'backward'
+                },
+                {
+                count: 12,
+                label: '12h',
+                step: 'hour',
+                stepmode: 'backward'
+                },
+                {step: 'all'}
+            ]},
+            rangeslider: {range: ['2022-08-13', '2022-08-13']},
+            //rangeslider: {range: autorange},
+            type: 'date'
+        },
+        yaxis: {
+            autorange: true,
+            //range: [0, 200],
+            type: 'linear'
+        }
+    };
+
+    var config = {
+        modeBarButtonsToRemove: ['pan2d', 'select2d', 'lasso2d', 'resetScale2d', 'zoomOut2d'],
+        responsive: true,
+        displaylogo: false,
+        staticPlot: false
+    }
+
+    //================ Motor Current ==========================
+
+    var trace0 = {
+        type: "scatter",
+        mode: "'lines+markers'",
+        name: 'Amperage',
+        x: dateTime,
+        y: MotorCurrent,
+        line: {color: '#7F7F7F'},
+        line: {shape: 'spline'},
+    }
+
+    var data = [trace0];
+
+    Plotly.newPlot('MotorCurrent-plot', data, layout, config)
+
+    //================ Motor Voltage ==========================
+
+    var trace1 = {
+        type: "scatter",
+        mode: "'lines+markers'",
+        name: 'Voltaje',
+        x: dateTime,
+        y: MotorVoltage,
+        line: {color: '#7F7F7F'},
+        line: {shape: 'spline'},
+    }
+
+    var data1 = [trace1];
+
+    Plotly.newPlot('MotorVoltage-plot', data1, layout, config)
+    
+    //================ Motor Power ==========================
+
+    var trace2 = {
+        type: "scatter",
+        mode: "'lines+markers'",
+        name: 'Power',
+        x: dateTime,
+        y: MotorPower,
+        line: {color: '#7F7F7F'},
+        line: {shape: 'spline'},
+    }
+
+    var data2 = [trace2];
+
+    Plotly.newPlot('MotorPower-plot', data2, layout, config)
+
+    //================ Motor Temperature ==========================
+
+    var trace3 = {
+        type: "scatter",
+        mode: "'lines+markers'",
+        name: 'Power',
+        x: dateTime,
+        y: MotorTemperature,
+        line: {color: '#7F7F7F'},
+        line: {shape: 'spline'},
+    }
+
+    var data3 = [trace3];
+
+    Plotly.newPlot('MotorTemperature-plot', data3, layout, config)
+
+    //================ Motor Frequency ==========================
+   
+    var trace4 = {
+        type: "scatter",
+        mode: "'lines+markers'",
+        name: 'Power',
+        x: dateTime,
+        y: MotorFrequency,
+        line: {color: '#7F7F7F'},
+        line: {shape: 'spline'},
+    }
+
+    var data4 = [trace4];
+
+    Plotly.newPlot('MotorFrequency-plot', data4, layout, config)
+
+    //================ Head Pressure ==========================
+
+    var trace5 = {
+        type: "scatter",
+        mode: "'lines+markers'",
+        name: 'Power',
+        x: dateTime,
+        y: HeadPressure,
+        line: {color: '#7F7F7F'},
+        line: {shape: 'spline'},
+    }
+
+    var data5 = [trace5];
+
+    Plotly.newPlot('HeadPressure-plot', data5, layout, config)
+   
+    //================ Head Temperature ==========================
+
+    var trace6 = {
+        type: "scatter",
+        mode: "'lines+markers'",
+        name: 'Power',
+        x: dateTime,
+        y: HeadTemperature,
+        line: {color: '#7F7F7F'},
+        line: {shape: 'spline'},
+    }
+
+    var data6 = [trace6];
+
+    Plotly.newPlot('HeadTemperature-plot', data6, layout, config)
+
+    //================ Casing Pressure ==========================
+
+    var trace7 = {
+        type: "scatter",
+        mode: "'lines+markers'",
+        name: 'Power',
+        x: dateTime,
+        y: CasingPressure,
+        line: {color: '#7F7F7F'},
+        line: {shape: 'spline'},
+    }
+
+    var data7 = [trace7];
+
+    Plotly.newPlot('CasingPressure-plot', data7, layout, config)
+    
+    //================ Flow line Pressure ==========================
+
+    var trace8 = {
+        type: "scatter",
+        mode: "'lines+markers'",
+        name: 'Power',
+        x: dateTime,
+        y: FlowlinePressure,
+        line: {color: '#7F7F7F'},
+        line: {shape: 'spline'},
+    }
+
+    var data8 = [trace8];
+
+    Plotly.newPlot('FlowlinePressure-plot', data8, layout, config)
+
+    //================ Pump Intake Pressure ==========================
+
+    var trace9 = {
+        type: "scatter",
+        mode: "'lines+markers'",
+        name: 'Power',
+        x: dateTime,
+        y: PumpIntakePressure,
+        line: {color: '#7F7F7F'},
+        line: {shape: 'spline'},
+    }
+
+    var data9 = [trace9];
+
+    Plotly.newPlot('PumpIntakePressure-plot', data9, layout, config)
+   
+</script>
+
+<!--Table 1-->
+<script src="{% static 'assets/js/plugins/datatables.js' %}"></script>
+<script>
+    const dataTableBasic1 = new simpleDatatables.DataTable("#datatable-basic1", {
+        searchable: true,
+        fixedHeight: true,
+
+    });
+
+</script>
+
+<script src="{% static 'assets/js/plugins/flatpickr.min.js' %}"></script>
+<script>
+    if (document.querySelector('.datetimepicker')) {
+        flatpickr('.datetimepicker', {
+            allowInput: true,
+            mode: "range"
+        }); // flatpickr
+    }
+</script>
+
+{% endblock JSscripts %}

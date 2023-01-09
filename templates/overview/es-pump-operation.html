@@ -1,0 +1,809 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} ESP - operation {% endblock title %}
+{% block company %} {{ CompanyName }}  {% endblock company %}
+{% block app %} Overview {% endblock app %}
+{% block PumpType %} {{object_list.type}} - operation {% endblock PumpType %}
+{% block PumpName %} {{object_list.name}} {% endblock PumpName %}
+
+{% block content %}
+
+<!-- local navbar -->
+<div class="nav-wrapper position-relative end-0">
+    <ul class="nav nav-pills nav-fill pb-0 bg-transparent" role="tablist">
+
+        <!-- Operation -->
+        <li class="nav-item">
+            <a class="btn bg-gradient-danger w-100 active text-lg" href="/overview/electrical-submersible-pump/operation/{{object_list.name}}" role="button">
+                <i class="fas fa-project-diagram me-2 text-lg"></i>
+                Operation
+            </a>
+        </li>
+
+        <!-- Trends -->
+        <li class="nav-item">
+            <a class="btn bg-gray-400 w-100 text-lg" href="/overview/electrical-submersible-pump/trends/{{object_list.name}}" role="button">
+                
+                <i class="fas fa-chart-line me-2 text-sm"></i>Trends
+            </a>
+        </li>
+
+        <!-- Troubleshoot -->
+        <li class="nav-item">
+            <a class="btn bg-gray-400 w-100 text-lg" href="/overview/electrical-submersible-pump/troubleshoot/{{object_list.name}}" role="button"
+                aria-controls="Troubleshoot" aria-selected="false">
+                <i class="fas fa-toolbox me-2 text-sm"></i>
+                Troubleshoot
+            </a>
+        </li>
+
+        <!-- Optimization -->
+        <li class="nav-item">
+            <a class="btn bg-gray-400 w-100 text-lg" href="/overview/electrical-submersible-pump/optimization/{{object_list.name}}" role="button"
+                aria-controls="Optimization" aria-selected="false">
+                <i class="fas fa-chart-bar me-2 text-sm"></i>
+                Optimization
+            </a>
+        </li>
+
+        <!-- Test -->
+        <li class="nav-item">
+            <a class="btn bg-gray-400 w-100 text-lg" href="/overview/electrical-submersible-pump/test/{{object_list.name}}" role="button"
+                aria-controls="Test" aria-selected="false">
+                <i class="fas fa-wrench me-2 text-sm"></i>
+                Test
+            </a>
+        </li>
+
+        <!-- Inputs -->
+        <li class="nav-item">
+            <a class="btn bg-gray-400 w-100 text-lg" href="/overview/electrical-submersible-pump/inputs/{{object_list.name}}" role="tab"
+                aria-controls="Inputs" aria-selected="false">
+                <i class="fas fa-edit me-2 text-sm"></i>
+                Inputs
+            </a>
+        </li>
+
+    </ul>
+
+</div>
+
+<hr class="horizontal dark my-0">
+
+<!-- Consult form -->
+<div class="row mt-2">
+    
+    <div class="col-xl-4 col-sm-2 mb-xl-0 mb-4">
+        <button class="btn bg-gradient-dark dropdown-toggle" type="button" id="dropdownImport"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            Today
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownImport">
+            <li><a class="dropdown-item" href="javascript:;">Yesterday</a></li>
+            <li><a class="dropdown-item" href="javascript:;">Last 7 days</a></li>
+            <li><a class="dropdown-item" href="javascript:;">Last 30 days</a></li>
+        </ul>
+    </div>
+
+    <div class="col-xl-4 col-sm-4 mb-xl-0 mb-4">
+        <div class="dropleft">
+            <form method="GET">{% csrf_token %}
+                <div class="row">
+                    <div class="col-xl-8 col-sm-8">
+                        <input class="form-control datetimepicker text-center" value="{{object_list.date}}" type="text" placeholder="today" id="dateKword" name="dateKword" />
+                    </div>
+                    <div class="col-xl-4 col-sm-4">
+                        <button class="btn bg-gradient-primary" type="submit"> Consult </button>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-sm-4 mb-xl-0 ">
+        <div class="numbers ">
+            <h6 class="font-weight-bolder float-end text-sx">Last Update:&nbsp;&nbsp;<span class="text-lg"  id = "LastUpdate"></span> </h6>
+        </div>
+        
+    </div>
+
+</div>
+
+<!-- Operations page -->    
+<!-- datos en cuadros -->
+<div class="row">
+
+    <!-- Amperage -->
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+            <div class="card-body p-3">
+                <div class="row">
+                    <div class="col-8">
+                        <div class="numbers">
+                            <p class="text-sm mb-0 text-capitalize font-weight-bold">Amperage</p>
+                            <h5 class="font-weight-bolder mb-0">
+                                <span id = "Amperage">--</span>
+                                <span class="text-black text-sm font-weight-bolder"> A</span>
+                            </h5>
+                            
+                        </div>
+                    </div>
+                    <div class="col-4 text-end">
+                        <div class="icon icon-shape bg-gradient-dark shadow text-center border-radius-md">
+                            <i class="fas fa-bolt text-lg"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Frequency -->
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+            <div class="card-body p-3">
+                <div class="row">
+                    <div class="col-8">
+                        <div class="numbers">
+                            <p class="text-sm mb-0 text-capitalize font-weight-bold">Frecuency</p>
+                            <h5 class="font-weight-bolder mb-0">
+                                <span id = "frequency">--</span>
+                                <span class="text-dark text-sm font-weight-bolder"> Hz</span>
+                            
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="col-4 text-end">
+                        <div class="icon icon-shape bg-gradient-dark shadow text-center border-radius-md">
+                            <i class="fas fa-stopwatch text-lg"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Motor Temperature -->
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+            <div class="card-body p-3">
+                <div class="row">
+                    <div class="col-8">
+                        <div class="numbers">
+                            <p class="text-sm mb-0 text-capitalize font-weight-bold">Motor Temperature</p>
+                            <h5 class="font-weight-bolder mb-0">
+                                <span id = "MotorTemperature">--</span>
+                                <span class="text-dark text-sm font-weight-bolder"> F</span>
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="col-4 text-end">
+                        <div class="icon icon-shape bg-gradient-dark shadow text-center border-radius-md">
+                            <i class="fas fa-thermometer-half text-lg"></i>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Head Temperature -->
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+            <div class="card-body p-3">
+                <div class="row">
+                    <div class="col-8">
+                        <div class="numbers">
+                            <p class="text-sm mb-0 text-capitalize font-weight-bold">Head Temperature</p>
+                            <h5 class="font-weight-bolder mb-0">
+                                <span id = "HeadTemperature">--</span>
+                                <span class="text-dark text-sm font-weight-bolder"> F</span>
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="col-4 text-end">
+                        <div class="icon icon-shape bg-gradient-dark shadow text-center border-radius-md">
+                            <i class="fas fa-thermometer-half text-lg"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Graficos principales -->
+<div class="row mt-4">
+
+    <!-- ANMETER-->
+    <div class="col-lg-4 col-md-12">
+        <div class="card h-100">
+            <div class="card-header pb-0 p-3">
+                <h6 class="mb-0">Ammeter chart</h6>
+                <div class="d-flex align-items-center">
+                    <span class="badge badge-md badge-dot me-4">
+                        <i class="bg-danger"></i>
+                        <span class="text-dark text-xs">Motor Current - Amp</span>
+                    </span>
+                </div>
+            </div>
+            <div class="card-body p-3">
+                <div class="chart">
+                    
+                    <div ui-jp="plot" id="ammeter-chart" style="height: 300px;"></div>
+                    <!--
+                    <canvas id="ammeter-chart" class="chart-canvas" height="300"></canvas>
+                    -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ALARMS TABLE -->
+    <div class="col-lg-8 col-md-12 mt-4 mt-lg-0">
+        <div class="card h-100">
+
+            <div class="col-12">
+                <div class="card">
+                    <!-- Card header -->
+                    <div class="card-header pb-0 p-3">
+                        <h6 class="mb-0">Events</h6>
+                        
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-flush" id="datatable-basic1">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Event</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Prediction</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Recomendation</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for event in object_list.event %}
+                                <tr>
+                                    <td class="text-sm font-weight-normal">{{event.WellEvent}}</td>
+                                    <td class="text-sm font-weight-normal">{{event.WellPrediction}}</td>
+                                    <td class="text-sm font-weight-normal">{{event.WellRecomendation}}</td>
+                                    <td class="text-sm font-weight-normal">{{event.DateCreate|safe}}</td>
+                                </tr>
+                                {% endfor %}
+                                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div> 
+</div>
+
+<!-- GENERAL PLOTS -->
+<div class="row mt-4">
+    <div class="col-lg-12 col-md-12">
+        <div class="card">
+            <div class="card-header pb-0 p-3">
+                <h6 class="mb-0">Graphs</h6>
+                <div class="d-flex align-items-center">
+                    <span class="badge badge-md badge-dot me-4">
+                        
+
+                    </span>
+                </div>
+            </div>
+            <div class="card-body p-3">
+                <div class="chart">
+                    <div ui-jp="plot" id="general-plot" style="height: 300px;"></div>
+                    <!--
+                    <canvas id="general-plots" class="chart-canvas" height="300"></canvas>
+                    -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- end Operations page -->
+
+{% endblock content %}
+
+{% block JSscripts %}
+
+<script src="{% static 'assets/js/plugins/chartjs.min.js'%}"></script>
+<script>
+
+    // ================== ammeter chart ==================
+    /*
+    var ctx1 = document.getElementById("ammeter").getContext("2d");
+
+    var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke1.addColorStop(1, 'rgba(203,12,159,0.2)');
+    gradientStroke1.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+    gradientStroke1.addColorStop(0, 'rgba(203,12,159,0)'); //purple colors
+
+    var gradientStroke2 = ctx1.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke2.addColorStop(1, 'rgba(20,23,39,0.2)');
+    gradientStroke2.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+    gradientStroke2.addColorStop(0, 'rgba(20,23,39,0)'); //purple colors
+
+
+    new Chart(ctx1, {
+        type: "line",
+        data: {
+            labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            datasets: [{
+                label: "Organic Search",
+                tension: 0.4,
+                borderWidth: 0,
+                pointRadius: 2,
+                pointBackgroundColor: "#cb0c9f",
+                borderColor: "#cb0c9f",
+                borderWidth: 3,
+                backgroundColor: gradientStroke1,
+                data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+                maxBarThickness: 6
+            }
+            ],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false,
+                }
+            },
+            interaction: {
+                intersect: false,
+                mode: 'index',
+            },
+            scales: {
+                y: {
+                    grid: {
+                        drawBorder: false,
+                        display: true,
+                        drawOnChartArea: true,
+                        drawTicks: false,
+                        borderDash: [5, 5]
+                    },
+                    ticks: {
+                        display: true,
+                        padding: 10,
+                        color: '#9ca2b7'
+                    }
+                },
+                x: {
+                    grid: {
+                        drawBorder: false,
+                        display: true,
+                        drawOnChartArea: true,
+                        drawTicks: true,
+                        borderDash: [5, 5]
+                    },
+                    ticks: {
+                        display: true,
+                        color: '#9ca2b7',
+                        padding: 10
+                    }
+                },
+            },
+        },
+    });
+    */
+    // ================== general plots ==================
+
+    /*
+    var ctx2 = document.getElementById("general-plots").getContext("2d");
+
+    var gradientStroke1 = ctx2.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke1.addColorStop(1, 'rgba(203,12,159,0.2)');
+    gradientStroke1.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+    gradientStroke1.addColorStop(0, 'rgba(203,12,159,0)'); //purple colors
+
+    var gradientStroke2 = ctx2.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke2.addColorStop(1, 'rgba(20,23,39,0.2)');
+    gradientStroke2.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+    gradientStroke2.addColorStop(0, 'rgba(20,23,39,0)'); //purple colors
+
+    // ================== structure all data ====================
+
+    var data_current = [];
+    var data_pressure = [];
+    var data_frequency = [];
+
+    '{% for well in object_list.data %}'
+    data_current.push({x: '{{well.DateCreate|safe}}',y: '{{well.MotorCurrent}}'});
+    data_pressure.push({x: '{{well.DateCreate|safe}}',y: '{{well.HeadPressure}}'});
+    data_frequency.push({x: '{{well.DateCreate|safe}}',y: '{{well.MotorFrequency}}'});
+    '{% endfor %}'
+
+    // Line chart
+    new Chart(ctx2, {
+        type: "line",
+        data: {
+            //labels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9","10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"],
+            datasets: [{
+                label: "Amperage",
+                tension: 0.4,
+                borderWidth: 0,
+                pointRadius: 2,
+                pointBackgroundColor: "#cb0c9f",
+                borderColor: "#cb0c9f",
+                borderWidth: 3,
+                backgroundColor: gradientStroke1,
+                data: data_current,
+                maxBarThickness: 6
+            },
+            {
+                label: "Pressure",
+                tension: 0.4,
+                borderWidth: 0,
+                pointRadius: 2,
+                pointBackgroundColor: "#3A416F",
+                borderColor: "#3A416F",
+                borderWidth: 3,
+                backgroundColor: gradientStroke2,
+                data: data_pressure,
+                maxBarThickness: 6
+            },
+            {
+                label: "Frequency",
+                tension: 0.4,
+                borderWidth: 0,
+                pointRadius: 2,
+                pointBackgroundColor: "#17c1e8",
+                borderColor: "#17c1e8",
+                borderWidth: 3,
+                backgroundColor: gradientStroke2,
+                data: data_frequency,
+                maxBarThickness: 6
+            },
+            ],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                }
+            },
+            interaction: {
+                intersect: true,
+                mode: 'index',
+            },
+            scales: {
+                y: {
+                    grid: {
+                        drawBorder: false,
+                        display: true,
+                        drawOnChartArea: true,
+                        drawTicks: false,
+                        borderDash: [5, 5]
+                    },
+                    ticks: {
+                        display: true,
+                        padding: 10,
+                        color: '#9ca2b7'
+                    }
+                },
+                x: {
+                    grid: {
+                        drawBorder: false,
+                        display: true,
+                        drawOnChartArea: true,
+                        drawTicks: true,
+                        borderDash: [5, 5]
+                    },
+                    ticks: {
+                        display: true,
+                        color: '#9ca2b7',
+                        padding: 10
+                    },
+                                       
+                },
+            },
+
+            
+        },
+    });
+*/
+
+</script>
+
+<script src="{% static 'assets/js/plugins/plotly-2.12.1.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.js' %}"></script>
+<script>
+
+    //-- =========== ammeter chart main ============= -->
+
+    const makeArrayOf = (value, length) => {
+
+        return Array.from({ length: length }).fill(value);;
+    }
+
+    const rangeArray = (start, end, step) => {
+        return (
+            Array.from(
+                Array.from(
+                    Array(Math.ceil(
+                        (end - start) / step
+                    )).keys()
+                ),
+                x => start + x * step
+            )
+        );
+    }
+
+    var Amperage = [];
+    var PIP = [];
+    var Frequency = [];
+    var Temperature = [];
+    var dateTime = [];
+    var dateTimeAm = [];
+    //var name = 'unip';
+    var name = '{{object_list.name}}';
+
+    // Get all data
+
+    '{% for well in object_list.data %}'
+        Amperage.push('{{well.MotorCurrent}}');
+
+        PIP.push('{{well.HeadPressure}}');
+
+        Frequency.push('{{well.MotorFrequency}}');
+        Temperature.push('{{well.TempWireMotor}}');
+
+        var ddt = new Date("{{well.DateCreate|date:'Y-m-d H:i'}}");
+        dateTime.push(ddt);
+
+        //console.log('{{well}}');
+
+        var hr = ddt.getHours();
+        var min = ddt.getMinutes();
+
+        dateTimeAm.push((hr + min / 60) * 15);
+
+    '{% endfor %}'
+
+    //console.log(Amperage);
+    //console.log(dateTimeAm);
+
+    var config = {
+        modeBarButtonsToRemove: ['pan2d', 'select2d', 'lasso2d', 'resetScale2d', 'zoomOut2d'],
+        responsive: true,
+        displaylogo: false,
+        staticPlot: false
+    }
+
+    var minSP = {
+        type: "scatterpolargl",
+        mode: "lines",
+        r: makeArrayOf(100, 48),
+        theta: rangeArray(3.5, 375, 7.5),
+        name: 'Min over load',
+        line: {
+            color: "#FDCC3F"
+        }
+    };
+
+    var maxSP = {
+        type: "scatterpolargl",
+        mode: "lines",
+        r: makeArrayOf(160, 48),
+        theta: rangeArray(3.5, 375, 7.5),
+        name: 'Max over load',
+        line: {
+            color: "#FFBA70"
+        }
+    };
+
+    var ammeter = {
+        type: "scatterpolargl",
+        mode: "lines",
+        r: Amperage,//[133, 135, 133, 135, 136, 135],
+        theta: dateTimeAm, // [345, 346, 347, 348, 349, 350],
+        name: 'Amperage',
+        line: {
+            color: "red"
+        }
+    };
+
+    //var data = [minSP, ammeter, maxSP];
+    var data = [ammeter];
+
+    var layout = {
+        //plot_bgcolor:"#FFFF",
+        //paper_bgcolor:"#aF85",
+        /*
+        */
+        margin: { l: 30, t: 25, b: 25, r: 30 },
+        autosize: true,
+        showlegend: false,
+        //orientation: -90,
+
+        polar: {
+
+            radialaxis: {
+                //label:false,
+                angle: 90,
+                tickangle: 90,
+                tickfont: { size: 10 },
+                visible: true,
+                color: 'green',
+                //autorange: true,
+                range: [-40, 170],
+                showline: true,
+                showgrid: true,
+                linecolor: 'black'
+            },
+
+            angularaxis: {
+                //label: false,
+                //thetaunit: "radians",
+                nticks: 48,
+                tickmode: 'array',
+                tickvals: rangeArray(0, 360, 15),
+                ticktext: rangeArray(0, 24, 1),
+                //dtick: 15,
+                visible: true,
+                color: 'green',
+                direction: "clockwise",
+                range: [0, 24],
+                categoryarray: ["d", "a", "c", "b"],
+                tickfont: {
+                    size: 12,
+                },
+                showticklabels: true
+
+            }
+        }
+
+    }
+
+    function dtFormat(dateTime) {
+        var dd = dateTime.getDate();
+        var yyyy = dateTime.getFullYear();
+        var mm = dateTime.getMonth() + 1;
+
+        mm = (mm < 10 ? '0' : '') + mm;
+        dd = (dd < 10 ? '0' : '') + dd;
+
+        // Now setting up Time Format (hh:mm:ss)
+        var hr = dateTime.getHours();
+        var min = dateTime.getMinutes();
+        var sec = dateTime.getSeconds();
+
+        hr = (hr < 10 ? '0' : '') + hr;
+        min = (min < 10 ? '0' : '') + min;
+        sec = (sec < 10 ? '0' : '') + sec;
+        var dt = yyyy + "-" + mm + "-" + dd + " " + hr + ":" + min + ":" + sec;
+        return dt;
+    }
+
+    Plotly.newPlot('ammeter-chart', data, layout, config)
+
+    $("#LastUpdate").html(dtFormat(dateTime[0]));
+    $("#Amperage").html(Amperage[0]);
+    $("#frequency").html(Frequency[0]);
+    $("#HeadTemperature").html(PIP[0]);
+    $("#MotorTemperature").html(Frequency[0]);
+
+    var trace0 = {
+        type: "scatter",
+        mode: "'lines+markers'",
+        name: 'Amperage',
+        x: dateTime,
+        y: Amperage,
+        line: {color: '#7F7F7F'},
+        line: {shape: 'spline'},
+    }
+
+    var trace1 = {
+        x: dateTime,
+        y: PIP,
+        type: 'scatter',
+        mode: "'lines+markers'",
+        name: 'Pressure',
+        line: {shape: 'spline'},
+    };
+
+    var trace2 = {
+        x: dateTime,
+        y: Frequency,
+        //xaxis: 'x2',
+        //yaxis: 'y2',
+        mode: "lines+markers",
+        name: 'Frequency',
+        type: 'scatter',
+        line: {shape: 'spline'},
+    };
+
+    var data = [trace0, trace1, trace2];
+
+    var layout = {
+        //background : gradientStroke1,
+        showlegend: true,
+        legend: {
+            "orientation": "h",
+            x: 0.2,
+            xanchor: 'left',
+            y: 1
+        },
+
+        margin: {l:40,t:10,b:10,r:30},
+		autosize: true,
+
+        yaxis2: {
+            domain: [0.6, 0.95],
+            anchor: 'x2'
+        },
+        xaxis2: {
+            domain: [0.6, 0.95],
+            anchor: 'y2'
+        },
+        xaxis: {
+            autorange: true,
+            range: ['2015-02-17', '2017-02-16'],
+            rangeselector: {buttons: [
+                {
+                count: 1,
+                label: '1h',
+                step: 'hour',
+                stepmode: 'backward'
+                },
+                {
+                count: 12,
+                label: '12h',
+                step: 'hour',
+                stepmode: 'backward'
+                },
+                {step: 'all'}
+            ]},
+            rangeslider: {range: ['2022-08-13', '2022-08-13']},
+            //rangeslider: {range: autorange},
+            type: 'date'
+        },
+        yaxis: {
+            autorange: true,
+            //range: [0, 200],
+            type: 'linear'
+        }
+    };
+
+    Plotly.newPlot('general-plot', data, layout, config)
+    //general-plots
+</script>
+
+<script src="{% static 'assets/js/plugins/datatables.js' %}"></script>
+<!--Table-->
+<script>
+    const dataTableBasic2 = new simpleDatatables.DataTable("#datatable-basic1", {
+        searchable: true,
+        fixedHeight: true,
+        perPage: 5
+    });
+
+</script>
+
+<script src="{% static 'assets/js/plugins/flatpickr.min.js' %}"></script>
+<script>
+    if (document.querySelector('.datetimepicker')) {
+        flatpickr('.datetimepicker', {
+            allowInput: true,
+            mode: "range"
+        }); // flatpickr
+    }
+</script>
+
+{% endblock JSscripts %}

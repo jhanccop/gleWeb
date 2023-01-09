@@ -1,0 +1,91 @@
+{% extends 'base_home.html' %}
+{% load static %}
+
+{% block title %} Login {% endblock title %}
+
+{% block content %}
+
+<main class="main-content  mt-0">
+    <section>
+        <div class="page-header min-vh-100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto">
+                        <div class="card card-plain">
+                            <div class="card-header pb-0 text-start">
+                                <h4 class="font-weight-bolder">Sign In</h4>
+                                <p class="mb-0">Enter your email and password to sign in</p>
+                            </div>
+                            <div class="card-body bg-gradient-light">
+                                <form role="form" method="post"> {% csrf_token %}
+                                    <div class="mb-3">
+                                        {{form.username}}
+                                    </div>
+                                    <div class="mb-3">
+                                        {{form.password}}
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="rememberMe">
+                                        <label class="form-check-label" for="rememberMe">Remember me</label>
+                                    </div>
+                                    <div class="text-center">
+                                        <button class="btn btn-lg bg-gradient-warning btn-lg w-100 mt-4 mb-0" type="submit"> Sign in </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-footer text-center pt-0 px-lg-2 px-1">
+                                <p class="mb-4 text-sm mx-auto">
+                                    Don't have an account?
+                                    <a href="" class="text-warning text-gradient font-weight-bold">Sign up</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
+                        <div
+                            class="position-relative bg-gradient-light h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center">
+                            <img src="{% static 'assets/img/shapes/pattern-lines.svg' %}" alt="pattern-lines"
+                                class="position-absolute opacity-4 start-0">
+                            <div class="position-relative">
+                                <img class="max-width-500 w-100 position-relative z-index-2"
+                                    src="{% static 'assets/img/illustrations/logo1.png' %}" alt="chat-img">
+                            </div>
+                            <h4 class="mt-5 text-dark font-weight-bolder">"Gas lock Eliminator"</h4>
+                            <p class="text-dark">Info.. add </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+{% endblock content %}
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Acceder</h1>
+    <form method="post"> {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit"> Login </button>
+
+    </form>
+</body>
+
+</html>

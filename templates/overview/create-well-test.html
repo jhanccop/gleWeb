@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} well test form {% endblock title %}
+{% block app %} Add new test {% endblock app %}
+{% block PumpType %} {{object_list.type}} - test {% endblock PumpType %}
+{% block PumpName %} {{object_list.name}} {% endblock PumpName %}
+
+{% block content %}
+
+<!-- local navbar -->
+<div class="nav-wrapper position-relative end-0">
+    <ul class="nav nav-pills nav-fill p-1 bg-transparent" >
+
+        <!-- Operation -->
+        <li class="nav-item">
+            <a class="nav-link mb-0 px-0 py-1" href="/overview/electrical-submersible-pump/operation/{{object_list.name}}" role="button">
+                <i class="ni ni-laptop me-2"></i> Operation
+            </a>
+        </li>
+
+        <!-- Trends -->
+        <li class="nav-item">
+            <a class="nav-link mb-0 px-0 py-1" href="/overview/electrical-submersible-pump/trends/{{object_list.name}}" role="button">
+                <i class="ni ni-chart-bar-32 me-2"></i> Trends
+            </a>
+        </li>
+
+        <!-- Troubleshoot -->
+        <li class="nav-item">
+            <a class="nav-link mb-0 px-0 py-1" href="/overview/electrical-submersible-pump/troubleshoot/{{object_list.name}}" role="button">
+                
+                <i class="ni ni-briefcase-24  me-2"></i> Troubleshoot
+            </a>
+        </li>
+
+        <!-- Optimization -->
+        <li class="nav-item">
+            <a class="nav-link mb-0 px-0 py-1"  href="/overview/electrical-submersible-pump/optimization/{{object_list.name}}" role="button">
+                
+                <i class="ni ni-spaceship me-2"></i> Optimization
+            </a>
+        </li>
+
+        <!-- Test -->
+        <li class="nav-item">           
+            <a class="btn bg-gradient-danger w-100 active"  href="/overview/electrical-submersible-pump/test/{{object_list.name}}" role="tab">
+                <i class="ni ni-check-bold me-2"></i> Test
+            </a>
+        </li>
+
+        <!-- Inputs -->
+        <li class="nav-item">
+            <a class="nav-link mb-0 px-0 py-1" href="/overview/electrical-submersible-pump/inputs/{{object_list.name}}" role="tab">
+                
+                <i class="ni ni-ruler-pencil me-2"></i> Inputs
+            </a>
+        </li>
+
+    </ul>
+
+</div>
+
+<div class="row">
+    <div class="col-lg-12 mt-lg-0 mt-4">
+        <form class="multisteps-form__form" method="POST">{% csrf_token %}
+            <!--single form panel-->
+            <div class="card p-3 border-radius-xl js-active" data-animation="FadeIn">
+                <h5 class="font-weight-bolder mb-0">Well Testing</h5>
+                <p class="mb-0 text-sm">Production fluid measurement test</p>
+                <div class="multisteps-form__content">
+
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-4">
+                            <label>Pump Name</label>
+                                {{ form.PumpName }}
+                        </div>
+                        <div class="col-12 col-sm-4 mt-3 mt-sm-0">
+                            <label>User</label>
+                                {{ form.UserAuthor }}
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-4">
+                            <label>Start test datetime</label>
+                                {{ form.DateStart }}
+                        </div>
+                        <div class="col-12 col-sm-4 mt-3 mt-sm-0">
+                            <label>End test datetime</label>
+                            {{ form.DateEnd }}
+                            
+                        </div>
+                        <div class="col-12 col-sm-4 mt-3 mt-sm-0">
+                            <label>Duration</label>
+                            {{ form.Duration }}
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-4">
+                            <label>Oil Rate - bbld</label>
+                            {{ form.OilRate }}
+                            
+                        </div>
+                        <div class="col-12 col-sm-4 mt-3 mt-sm-0">
+                            <label>Water Rate - bbld</label>
+                            {{ form.WaterRate }}
+                            
+                        </div>
+                        <div class="col-12 col-sm-4 mt-3 mt-sm-0">
+                            <label>Gas Rate - msfd</label>
+                            {{ form.GasRate }}
+                            
+                        </div>
+                    </div>
+                                       
+                    <div class="button-row d-flex mt-4">
+                        <button class="btn bg-gradient-info ms-auto mb-0 js-btn-next" type="submit"
+                            title="Next">Save</button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block JSscripts %}
+<script src="{% static 'assets/js/plugins/flatpickr.min.js' %}"></script>
+
+<script>
+if (document.querySelector('.datetimepicker')) {
+    flatpickr('.datetimepicker', {
+      allowInput: true
+    }); // flatpickr
+}
+/*
+if (document.querySelector('.datepicker')) {
+    flatpickr('.datepicker', {
+      mode: "range"
+    }); // flatpickr
+}*/
+</script>
+
+
+{% endblock JSscripts %}

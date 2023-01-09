@@ -1,0 +1,377 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} ESP - input {% endblock title %}
+{% block company %} {{ CompanyName }} {% endblock company %}
+{% block app %} Overview {% endblock app %}
+{% block PumpType %} {{object_list.type}} - input {% endblock PumpType %}
+{% block PumpName %} {{object_list.name}} {% endblock PumpName %}
+
+{% block content %}
+
+<!-- local navbar -->
+<div class="nav-wrapper position-relative end-0">
+    <ul class="nav nav-pills nav-fill pb-0 bg-transparent" role="tablist">
+
+        <!-- Operation -->
+        <li class="nav-item">
+            <a class="btn bg-gray-400 w-100 text-lg" href="/overview/electrical-submersible-pump/operation/{{object_list.name}}" role="button">
+                <i class="fas fa-project-diagram me-2 text-lg"></i>
+                Operation
+            </a>
+        </li>
+
+        <!-- Trends -->
+        <li class="nav-item">
+            <a class="btn bg-gray-400 w-100 text-lg" href="/overview/electrical-submersible-pump/trends/{{object_list.name}}" role="button">
+                
+                <i class="fas fa-chart-line me-2 text-sm"></i>Trends
+            </a>
+        </li>
+
+        <!-- Troubleshoot -->
+        <li class="nav-item">
+            <a class="btn bg-gray-400 w-100 text-lg" href="/overview/electrical-submersible-pump/troubleshoot/{{object_list.name}}" role="button"
+                aria-controls="Troubleshoot" aria-selected="false">
+                <i class="fas fa-toolbox me-2 text-sm"></i>
+                Troubleshoot
+            </a>
+        </li>
+
+        <!-- Optimization -->
+        <li class="nav-item">
+            <a class="btn bg-gray-400 w-100 text-lg" href="/overview/electrical-submersible-pump/optimization/{{object_list.name}}" role="button"
+                aria-controls="Optimization" aria-selected="false">
+                <i class="fas fa-chart-bar me-2 text-sm"></i>
+                Optimization
+            </a>
+        </li>
+
+        <!-- Test -->
+        <li class="nav-item">
+            <a class="btn bg-gray-400 w-100 text-lg" href="/overview/electrical-submersible-pump/test/{{object_list.name}}" role="button"
+                aria-controls="Test" aria-selected="false">
+                <i class="fas fa-wrench me-2 text-sm"></i>
+                Test
+            </a>
+        </li>
+
+        <!-- Inputs -->
+        <li class="nav-item">
+            <a class="btn bg-gradient-danger w-100 active text-lg" href="/overview/electrical-submersible-pump/inputs/{{object_list.name}}" role="tab"
+                aria-controls="Inputs" aria-selected="false">
+                <i class="fas fa-edit me-2 text-sm"></i>
+                Inputs
+            </a>
+        </li>
+
+    </ul>
+
+</div>
+
+<hr class="horizontal dark my-0">
+
+<div class="row mt-4">
+
+    <div class="col-lg-6 mt-lg-0 mt-4">
+        <form class="multisteps-form__form">
+            <!--single form panel-->
+            <div class="card p-3 border-radius-xl bg-white js-active" data-animation="FadeIn">
+                <h5 class="font-weight-bolder mb-0">Surface Equipment</h5>
+                <p class="mb-0 text-sm">Expl..</p>
+                <div class="multisteps-form__content">
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-6">
+                            <label>Transformer Input Voltage - V</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="350" />
+                        </div>
+                        <div class="col-12 col-sm-6 mt-3 mt-sm-0">
+                            <label>Transformer Output Voltage - V</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-6">
+                            <label>Transformer Power - KVA</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="350" />
+                        </div>
+                        <div class="col-12 col-sm-6 mt-3 mt-sm-0">
+                            <label>Ambient Temperature - F</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                    </div>
+                                       
+                    <div class="button-row d-flex mt-4">
+                        <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button"
+                            title="Next">Save</button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="col-lg-6 mt-lg-0 mt-4">
+        <form class="multisteps-form__form">
+            <!--single form panel-->
+            <div class="card p-3 border-radius-xl bg-white js-active" data-animation="FadeIn">
+                <h5 class="font-weight-bolder mb-0">Fluid Parameters</h5>
+                <p class="mb-0 text-sm">Expl..</p>
+                <div class="multisteps-form__content">
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-6">
+                            <label>API gravity</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="350" />
+                        </div>
+                        <div class="col-12 col-sm-6 mt-3 mt-sm-0">
+                            <label>Dynamic Viscosity - cP</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-6">
+                            <label>Burble Point - psi</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="350" />
+                        </div>
+                        <div class="col-12 col-sm-6 mt-3 mt-sm-0">
+                            <label>Dew point - F</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                    </div>
+                                       
+                    <div class="button-row d-flex mt-4">
+                        <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button"
+                            title="Next">Save</button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+
+</div>
+
+<div class="row mt-4">
+        
+    <div class="col-lg-6 mt-lg-0 mt-4">
+        <form class="multisteps-form__form">
+            <!--single form panel-->
+            <div class="card p-3 border-radius-xl bg-white js-active" data-animation="FadeIn">
+                <h5 class="font-weight-bolder mb-0">Pump</h5>
+                <p class="mb-0 text-sm">Expl..</p>
+                <div class="multisteps-form__content">
+                    
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-6">
+                            <label>Pump Type</label>
+                            <input class="multisteps-form__input form-control" type="text" placeholder="350" />
+                        </div>
+                        <div class="col-12 col-sm-6 mt-3 mt-sm-0">
+                            <label>State Type</label>
+                            <select class="multisteps-form__select form-control">
+                              <option selected="selected">...</option>
+                              <option value="1">Floating Type</option>
+                              <option value="2">Compression TYpe</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-6">
+                            <label>Downthrust - bbl/d</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="350" />
+                        </div>
+                        <div class="col-12 col-sm-6 mt-3 mt-sm-0">
+                            <label>Upthrust - bbl/d</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="350" />
+                            
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-6">
+                            <label>Set Depth - ft</label>
+                            <input class="multisteps-form__input form-control" type="text" placeholder="350" />
+                        </div>
+                        <div class="col-12 col-sm-6 mt-3 mt-sm-0">
+                            <label>Number of stages</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-6">
+                            <label>Best Effiency Point - bbl/d</label>
+                            <input class="multisteps-form__input form-control" type="text" placeholder="350" />
+                        </div>
+
+                    </div>
+                                       
+                    <div class="button-row d-flex mt-4">
+                        <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button"
+                            title="Next">Save</button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="col-lg-6 mt-lg-0 mt-4">
+        <form class="multisteps-form__form">
+            <!--single form panel-->
+            <div class="card p-3 border-radius-xl bg-white js-active" data-animation="FadeIn">
+                <h5 class="font-weight-bolder mb-0">Motor</h5>
+                <p class="mb-0 text-sm">Expl..</p>
+                <div class="multisteps-form__content">
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-6">
+                            <label>Motor Type</label>
+                            <input class="multisteps-form__input form-control" type="text" placeholder="350" />
+                        </div>
+                        <div class="col-12 col-sm-6 mt-3 mt-sm-0">
+                            <label>Nominal Current - A</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-6">
+                            <label>Mnominal Frequency - Hz</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="350" />
+                        </div>
+                        <div class="col-12 col-sm-6 mt-3 mt-sm-0">
+                            <label>Temperatura resistance:</label>
+                            <select class="multisteps-form__select form-control">
+                              <option selected="selected">...</option>
+                              <option value="1">Standard</option>
+                              <option value="2">Intermediate</option>
+                              <option value="3">High Temperature</option>
+                            </select>
+                            
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-6">
+                            <label>Nominal Voltage - V</label>
+                            <input class="multisteps-form__input form-control" type="text" placeholder="350" />
+                        </div>
+                        <div class="col-12 col-sm-6 mt-3 mt-sm-0">
+                            <label>Nominal Power - HP</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-6">
+                            <label>Idle Currente - A</label>
+                            <input class="multisteps-form__input form-control" type="text" placeholder="350" />
+                        </div>
+                    </div>
+                                       
+                    <div class="button-row d-flex mt-4">
+                        <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button"
+                            title="Next">Save</button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div class="row mt-4">
+
+    <div class="col-lg-6 mt-lg-0 mt-4">
+        <form class="multisteps-form__form">
+            <!--single form panel-->
+            <div class="card p-3 border-radius-xl bg-white js-active" data-animation="FadeIn">
+                
+                <h5 class="font-weight-bolder mb-0">Completion</h5>
+                <p class="mb-0 text-sm">Expl..</p>
+                <div class="multisteps-form__content">
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-6">
+                            <label>Tubing Diameter - in</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="350" />
+                        </div>
+                        <div class="col-12 col-sm-6 mt-3 mt-sm-0">
+                            <label>Casing Diameter - in</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-6">
+                            <label>Tubing depth - ft</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="350" />
+                        </div>
+                        <div class="col-12 col-sm-6 mt-3 mt-sm-0">
+                            <label>Casing depth - ft</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-6">
+                            <label>Liner Diameter - in</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="350" />
+                        </div>
+                        <div class="col-12 col-sm-6 mt-3 mt-sm-0">
+                            <label>Liner Depth - ft</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                    </div>
+                                       
+                    <div class="button-row d-flex mt-4">
+                        <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button"
+                            title="Next">Save</button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="col-lg-6 mt-lg-0 mt-4">
+        <form class="multisteps-form__form">
+            <!--single form panel-->
+            <div class="card p-3 border-radius-xl bg-white js-active" data-animation="FadeIn">
+                <h5 class="font-weight-bolder mb-0">Separator</h5>
+                <p class="mb-0 text-sm">Expl..</p>
+                <div class="multisteps-form__content">
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-12 mt-12 mt-sm-0">
+                            <label>Separator Type:</label>
+                            <select class="multisteps-form__select form-control">
+                                <option selected="selected">...</option>
+                                <option value="1">Standard</option>
+                                <option value="2">Enhanced</option>
+                                <option value="3">Advanced</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                   
+                    <div class="button-row d-flex mt-4">
+                        <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button"
+                            title="Next">Save</button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    
+</div>
+
+{% endblock content %}
+
+{% block JSscripts %}
+    <!-- SCRIPTS -->
+{% endblock JSscripts %}

@@ -1,0 +1,220 @@
+{% extends 'base_home.html' %}
+{% load static %}
+
+{% block title %} Home {% endblock title %}
+
+{% block content %}
+
+<div class="main-content position-relative bg-gray-100 max-height-vh-100 h-100">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg bg-transparent shadow-none position-absolute px-4 w-100 z-index-2">
+      <div class="container-fluid py-1">
+        
+        <div class="collapse navbar-collapse me-md-0 me-sm-4 mt-sm-0 mt-2" id="navbar">
+          <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+            
+          </div>
+          <ul class="navbar-nav justify-content-end">
+            <li class="nav-item d-flex align-items-center">
+              <a  href="login" type="button" class="btn bg-gradient-primary">
+                <i class="fa fa-user me-sm-1"></i>
+                <span class="d-sm-inline d-none">Sign In</span>
+              </a>
+              
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- End Navbar -->
+
+    <div class="container-fluid">
+      <div class="page-header min-height-200 border-radius-xl mt-4"
+        style="background-image: url('/static/assets/img/curved-images/bgf.jpg'); background-position-y: 100%;">
+        <span class="mask bg-gradient-warning opacity-1"></span>
+      </div>
+      <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">
+        <div class="row gx-4">
+          <div class="col-auto">
+            
+            <div class="avatar avatar-xl position-relative bg-gradient-light">
+              <img src="{% static 'assets/img/logo_small.png' %}" alt="profile_image" class="w-100 border-radius-lg shadow-sm ">
+            </div>
+          </div>
+          <div class="col-auto my-auto">
+            <div class="h-100 text-center">
+              <h4 class="mb-1">
+                GLE
+              </h4>
+              <p class="mb-0 font-weight-bold text-sm">
+                Gas Lock Eliminator
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-2 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
+            <div class="nav-wrapper position-relative end-0">
+              <ul class="nav nav-pills nav-fill p-1 bg-transparent" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link mb-0 px-0 py-1 active " data-bs-toggle="tab" href="javascript:;" role="tab"
+                    aria-selected="true">
+                    <i class="fas fa-id-badge text-lg"></i>
+                    <span class="ms-1">Contact</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-md-6 col-lg-8">
+            <div class="card">
+                <div class="card-header d-flex align-items-center border-bottom py-3">
+                    <div class="d-flex align-items-center">
+                        <a href="javascript:;">
+                            <img src="static/assets/img/sam.jpg" class="avatar" alt="profile-image">
+                        </a>
+                        <div class="mx-3">
+                            <a href="javascript:;" class="text-dark font-weight-600 text-sm">Dr.</a>
+                            <small class="d-block text-muted">Jesus S. Armacanqui</small>
+                        </div>
+                    </div>
+                    <div class="text-end ms-auto">
+                        <button type="button" class="btn btn-sm bg-gradient-primary mb-0">
+                            <i class="fas fa-phone text-sm"></i> Contact
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="mb-4 text-justify">
+                        Dr. Armacanqui has more than 25 years of corporate experience, working globally with E
+                        & P companies such as Shell, Conoco, PDVSA and Dea Oil & Gas and major service companies such as
+                        Schlumberger, Camco-Reda. He participated in the Development of Shale Oil leases in the USA as well as in
+                        the operation of multiple tied oil fields in the Americas and around the world. He has been the senior ESP
+                        application engineer of a global ESP supplier and has worked as the ESP team leader of a global operator
+                        overseeing a team in charge of 900 ESPs. Dr. Armacanqui has also pioneered the development and operation of
+                        an Uncoventional Reservoir of Extra Heavy Oil Project in the Orinoco Belt field San Diego, Venezuela
+                        (120,000 bopd) where he was the production specialist in charge. Other assignments include technical manager
+                        of Reda Pumps, Venezuela, head of artificial lift for PDO-Oman, development manager for DEA Egypt and Coo of
+                        WOGI, USA. He has a Ph.D. in Reservoir Engineering from Freiberg Mining
+                        Academy and a Post-Doctorate in Projects & Business Management from the Clausthal University and is an
+                        international lecturer, in topics of production optimization, ESPs, PCP, BPs GL, sustainable oil field
+                        development, effective introduction of innovations/new technology, well testing, operational excellence,
+                        EOR, process enhancement, advanced tendering techniques, and oil field management in the scenario of low oil
+                        prices for heavy and shale oil fields. He has initiated/participated in the development & pilot field test
+                        of multiple innovations – world’s first prototypes. He is a regular author of SPE papers and gives advanced
+                        training on ESp and GL Advanced Level for senior staff, managers and executives for the University of
+                        Oklahoma. He has been Member of Technical Committees of SPE and AAPG Conferences, lately for AAPG GTW in
+                        China
+                    </p>
+                    <img alt="Image placeholder"
+                        src="static/assets/img/slider-1.jpg"
+                        class="img-fluid border-radius-lg shadow-lg">
+                    
+    
+                    <hr class="horizontal dark my-3">
+                    <!-- Comments -->
+                    
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-4">
+            <div class="card mb-3 mt-lg-0 mt-4">
+                <div class="card-body pb-0">
+                    <div class="row align-items-center mb-3">
+                        <div class="col-9">
+                            <h5 class="mb-1 text-gradient text-primary">
+                                <a href="javascript:;">Mision and Vision</a>
+                            </h5>
+                        </div>
+    
+                        <!--
+                        <div class="col-3 text-end">
+                            <div class="dropstart">
+                                <a href="javascript:;" class="text-secondary" id="dropdownMarketingCard"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3"
+                                    aria-labelledby="dropdownMarketingCard">
+                                    <li><a class="dropdown-item border-radius-md" href="javascript:;">Edit Team</a></li>
+                                    <li><a class="dropdown-item border-radius-md" href="javascript:;">Add Member</a></li>
+                                    <li><a class="dropdown-item border-radius-md" href="javascript:;">See Details</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item border-radius-md text-danger" href="javascript:;">Remove
+                                            Team</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        -->
+                    </div>
+                    <h6>
+                        Mission
+                    </h6>
+                    <p class="text-justify">TO PROVIDE OUR CUSTOMERS WITH WORLD CLASS SOLUTIONS TO THEIR EVERY-DAY PROBLEMS IN ARTIFICIAL
+                        LIFT
+                    </p>
+                    
+                    <hr class="horizontal dark my-3">
+                    
+                    <h6>
+                        Mission
+                    </h6>
+                    <p class="text-justify">TO BE THE MOST RELIABLE PROVIDER OF EFFECTIVE SOLUTIONS TO ACHIEVE MAXIMUM PROFITABILITY BY MITIGATING PROBLEMS
+                        OF ARTIFICIAL LIFT SYSTEMS
+                    </p>
+                </div>
+            </div>
+            <div class="card mt-4 mb-3">
+                <div class="card-body pb-0">
+                    <div class="row align-items-center mb-3">
+                        <div class="col-9">
+                            <h5 class="mb-1 text-gradient text-primary">
+                                <a href="javascript:;">The problem</a>
+                            </h5>
+                        </div>
+                        <!--
+                        <div class="col-3 text-end">
+                            <div class="dropstart">
+                                <a href="javascript:;" class="text-secondary" id="dropdownDesignCard" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3" aria-labelledby="dropdownDesignCard">
+                                    <li><a class="dropdown-item border-radius-md" href="javascript:;">Edit Team</a></li>
+                                    <li><a class="dropdown-item border-radius-md" href="javascript:;">Add Member</a></li>
+                                    <li><a class="dropdown-item border-radius-md" href="javascript:;">See Details</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item border-radius-md text-danger" href="javascript:;">Remove
+                                            Team</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        -->
+                    </div>
+                    <p>Because it's about motivating the doers. Because I’m here to follow my dreams and inspire other people to
+                        follow their dreams, too.</p>
+                    <img alt="Image placeholder"
+                    src="static/assets/img/slider-5.jpg" class="img-fluid border-radius-lg shadow-lg">
+                    <hr class="horizontal dark my-3">
+                </div>
+            </div>
+            
+        </div>
+        {% include 'includes/footer.html' %}
+    </div>
+    
+    </div>
+    
+  </div>
+
+  
+
+{% endblock content %}

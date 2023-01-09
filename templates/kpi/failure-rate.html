@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} KPI - failure - rate{% endblock title %}
+
+{% block company %} {{ CompanyName }} {% endblock company %}
+{% block app %}  KPI {% endblock app %}
+{% block PumpType %} Failure Rate {% endblock PumpType %}
+{% block PumpName %}  {% endblock PumpName %}
+
+{% block content %}
+
+
+
+<div class="row mt-4">
+
+    <!-- Deferment TABLE -->
+    <div class="col-lg-7 col-md-12">
+        <div class="card h-100">
+
+            <div class="col-12">
+                <div class="card">
+                    <!-- Card header -->
+                    <div class="card-header pb-0 p-3">
+                        <h5 class="mb-0">{{ CompanyName }}</h5>
+                        <p> <span>Total failues:</span> <span id="total-{{list_failures.company}}"> -- </span> </p>
+                    </div>
+                    <div class="table-responsive h-100">
+                        <table class="table table-flush" id="datatable-{{field_i.FieldName}}">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Field Name</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"># Failures</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Active Wells</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Failure Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for field in list_failures.data %}
+                                <tr>
+                                    <td class="text-sm font-weight-normal">{{field.PumpName__FieldName__FieldName}}</td>
+                                    <td class="text-sm font-weight-normal">{{field.CountFailures}}</td>
+                                    <td class="text-sm font-weight-normal">--</td>
+                                    <td class="text-sm font-weight-normal">--</td>
+
+                                </tr>
+                                {% endfor %}
+                                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div> 
+
+    <!-- deferment plot -->
+    <div class="col-lg-5 col-md-12 mt-4 mt-lg-0">
+        <div class="card h-100">
+            <div class="card-header pb-0 p-3">
+                <h6 class="mb-0">Deferment graph</h6>
+                <div class="d-flex align-items-center">
+                    <!--
+                    <span class="badge badge-md badge-dot me-4">
+                        <i class="bg-danger"></i>
+                        <span class="text-dark text-xs">Failures</span>
+                    </span>
+                    -->
+                </div>
+            </div>
+            <div class="card-body p-3">
+                <div class="chart">
+                    <!--
+                    <div ui-jp="plot" id=""deferment-plot" style="height: 300px;"></div>
+                    -->
+                    <canvas id="failureRate-plot" class="chart-canvas" height="300"></canvas>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}
+
+{% block JSscripts %}
+
+<script src="{% static 'assets/js/plugins/chartjs.min.js'%}"></script>
+<script>
+    // ================== general plots ==================
+
+    var labels = [];
+    var values = [];
+    var total = 0;
+    '{% for field_i in object_list.data %}'
+        labels.push('{{field_i.FieldName__FieldName}}');
+        values.push('{{field_i.CountFailures}}');
+        total = total + parseInt('{{field_i.CountFailures}}', 10); 
+    '{% endfor %}'
+     // Bar chart
+
+    $("#total-{{list_failures.company}}").html(total);
+
+    var ctx2 = document.getElementById("failureRate-plot").getContext("2d");
+
+    var gradientStroke1 = ctx2.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke1.addColorStop(1, 'rgba(203,12,159,0.2)');
+    gradientStroke1.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+    gradientStroke1.addColorStop(0, 'rgba(203,12,159,0)'); //purple colors
+
+    var gradientStroke2 = ctx2.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke2.addColorStop(1, 'rgba(20,23,39,0.2)');
+    gradientStroke2.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+    gradientStroke2.addColorStop(0, 'rgba(20,23,39,0)'); //purple colors
+
+    // Line chart
+    new Chart(ctx2, {
+      type: "bar",
+      data: {
+        labels: labels,//['16-20', '21-25', '26-30', '31-36', '36-42', '42+'],
+        datasets: [{
+          label: "Failures by fields",
+          weight: 5,
+          borderWidth: 0,
+          borderRadius: 4,
+          backgroundColor: '#3A416F',
+          data: values,
+          fill: false,
+          maxBarThickness: 35
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+          }
+        },
+        scales: {
+          y: {
+            grid: {
+              drawBorder: false,
+              display: true,
+              drawOnChartArea: true,
+              drawTicks: false,
+              borderDash: [5, 5]
+            },
+            ticks: {
+              display: true,
+              padding: 10,
+              color: '#9ca2b7'
+            }
+          },
+          x: {
+            grid: {
+              drawBorder: false,
+              display: false,
+              drawOnChartArea: true,
+              drawTicks: true,
+            },
+            ticks: {
+              display: true,
+              color: '#9ca2b7',
+              padding: 10
+            }
+          },
+        },
+      },
+    });
+    
+
+</script>
+
+<script src="{% static 'assets/js/plugins/datatables.js' %}"></script>
+
+<!--Table 1-->
+<script>
+//dataTableBasic1
+var tables = {};
+    '{% for field_i in list_failures.data %}'
+    tables["{{field_i.FieldName}}"] = new simpleDatatables.DataTable("#datatable-{{field_i.FieldName}}", {
+        searchable: true,
+        fixedHeight: true,
+        perPage: 5
+    });
+
+    '{% endfor %}'
+
+</script>
+
+{% endblock JSscripts %}

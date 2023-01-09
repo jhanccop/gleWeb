@@ -1,0 +1,877 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} ESP - optimization {% endblock title %}
+{% block company %} {{ CompanyName }} {% endblock company %}
+{% block app %} Overview {% endblock app %}
+{% block PumpType %} {{object_list.type}} - optimization {% endblock PumpType %}
+{% block PumpName %} {{object_list.name}} {% endblock PumpName %}
+
+{% block content %}
+
+<!-- local navbar -->
+<div class="nav-wrapper position-relative end-0">
+    <ul class="nav nav-pills nav-fill pb-0 bg-transparent" role="tablist">
+
+        <!-- Operation -->
+        <li class="nav-item">
+            <a class="btn bg-gray-400 w-100 text-lg" href="/overview/electrical-submersible-pump/operation/{{object_list.name}}" role="button">
+                <i class="fas fa-project-diagram me-2 text-lg"></i>
+                Operation
+            </a>
+        </li>
+
+        <!-- Trends -->
+        <li class="nav-item">
+            <a class="btn bg-gray-400 w-100 text-lg" href="/overview/electrical-submersible-pump/trends/{{object_list.name}}" role="button">
+                
+                <i class="fas fa-chart-line me-2 text-sm"></i>Trends
+            </a>
+        </li>
+
+        <!-- Troubleshoot -->
+        <li class="nav-item">
+            <a class="btn bg-gray-400 w-100 text-lg" href="/overview/electrical-submersible-pump/troubleshoot/{{object_list.name}}" role="button"
+                aria-controls="Troubleshoot" aria-selected="false">
+                <i class="fas fa-toolbox me-2 text-sm"></i>
+                Troubleshoot
+            </a>
+        </li>
+
+        <!-- Optimization -->
+        <li class="nav-item">
+            <a class="btn bg-gradient-danger w-100 active text-lg" href="/overview/electrical-submersible-pump/optimization/{{object_list.name}}" role="button"
+                aria-controls="Optimization" aria-selected="false">
+                <i class="fas fa-chart-bar me-2 text-sm"></i>
+                Optimization
+            </a>
+        </li>
+
+        <!-- Test -->
+        <li class="nav-item">
+            <a class="btn bg-gray-400 w-100 text-lg" href="/overview/electrical-submersible-pump/test/{{object_list.name}}" role="button"
+                aria-controls="Test" aria-selected="false">
+                <i class="fas fa-wrench me-2 text-sm"></i>
+                Test
+            </a>
+        </li>
+
+        <!-- Inputs -->
+        <li class="nav-item">
+            <a class="btn bg-gray-400 w-100 text-lg" href="/overview/electrical-submersible-pump/inputs/{{object_list.name}}" role="tab"
+                aria-controls="Inputs" aria-selected="false">
+                <i class="fas fa-edit me-2 text-sm"></i>
+                Inputs
+            </a>
+        </li>
+
+    </ul>
+
+</div>
+
+<hr class="horizontal dark my-0">
+
+<!-- Consult form -->
+<div class="row mt-2">
+    
+    <div class="col-xl-12 col-sm-12 mb-xl-0 ">
+        <div class="numbers ">
+            <h6 class="font-weight-bolder float-end text-sx">Last Update:&nbsp;&nbsp;<span class="text-lg"  id = "LastUpdate"></span>{{object_list.data.DateCreate|safe}} </h6>
+        </div>
+        
+    </div>
+
+</div>
+
+<!-- surface form -->
+<div class="row">
+    <div class="col-lg-12 mt-lg-0 mt-4">
+        <form class="multisteps-form__form">
+            <!--single form panel-->
+            <div class="card p-3 border-radius-xl bg-white js-active" data-animation="FadeIn">
+                <h5 class="font-weight-bolder mb-0">Surface Parameters</h5>
+                <p class="mb-0 text-sm">Expl..</p>
+                <div class="multisteps-form__content">
+
+                    <!--Head Pressure -->
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-2">
+                            <label>Min Head Pressure - PSI</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="350" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Max Head Pressure - PSI</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Opt Head Pressure - PSI</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Scale Type:</label>
+                            <select class="multisteps-form__select form-control">
+                                <option selected="selected">...</option>
+                                <option value="1">Lineal</option>
+                                <option value="2">Logarithmic</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-4 mt-4 mt-sm-0">
+                            <div class="progress-info">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <span class="text-sm font-weight-bold ">Min: 40</span>
+                                    </div>
+    
+                                    <div class="col-lg-6">
+                                        <span class="text-sm font-weight-bold text-center">Max: 80</span>
+                                    </div>
+                                </div>
+    
+                                <div class="progress-percentage">
+                                    <span class="text-sm font-weight-bold">{{object_list.data.HeadPressure}}</span>
+                                </div>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="60"
+                                    aria-valuemin="40" aria-valuemax="80" style="width: {{object_list.data.HeadPressure}}%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Choke opening  -->
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-2">
+                            <label>Min Choke Opening - %</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="350" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Max Choke Opening - %</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Opt Choke Opening - %</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Scale Type:</label>
+                            <select class="multisteps-form__select form-control">
+                                <option selected="selected">...</option>
+                                <option value="1">Lineal</option>
+                                <option value="2">Logarithmic</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-4 mt-4 mt-sm-0">
+                            <div class="progress-info">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <span class="text-sm font-weight-bold ">Min: 40</span>
+                                    </div>
+    
+                                    <div class="col-lg-6">
+                                        <span class="text-sm font-weight-bold text-center">Max: 80</span>
+                                    </div>
+    
+                                </div>
+                                <div class="progress-percentage">
+                                    <span class="text-sm font-weight-bold">{{object_list.event.ChokeOpeningSetpoint}}</span>
+                                </div>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="60"
+                                    aria-valuemin="40" aria-valuemax="80" style="width: {{object_list.event.ChokeOpeningSetpoint}}%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                                       
+                    <div class="button-row d-flex mt-4">
+                        <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button"
+                            title="Next">Save</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<!-- Downhole form -->
+<div class="row mt-4">
+    <div class="col-lg-12 mt-lg-0 mt-4">
+        <form class="multisteps-form__form">
+            <!--single form panel-->
+            <div class="card p-3 border-radius-xl bg-white js-active" data-animation="FadeIn">
+                <h5 class="font-weight-bolder mb-0">Downhole Parameters</h5>
+                <p class="mb-0 text-sm">Expl..</p>
+                <div class="multisteps-form__content">
+                    
+                    <!-- Separattor Eficiency -->
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-2">
+                            <label>Min Separattor Eficiency - %</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="350" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Max Separattor Eficiency - %</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Opt Separattor Eficiency - %</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Scale Type:</label>
+                            <select class="multisteps-form__select form-control">
+                                <option selected="selected">...</option>
+                                <option value="1">Lineal</option>
+                                <option value="2">Logarithmic</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-4 mt-4 mt-sm-0">
+                            <div class="progress-info">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <span class="text-sm font-weight-bold ">Min: 40</span>
+                                    </div>
+    
+                                    <div class="col-lg-6">
+                                        <span class="text-sm font-weight-bold text-center">Max: 80</span>
+                                    </div>
+    
+                                </div>
+    
+    
+                                <div class="progress-percentage">
+                                    <span class="text-sm font-weight-bold">60</span>
+                                </div>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="60"
+                                    aria-valuemin="40" aria-valuemax="80" style="width: 60%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pump Wear -->
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-2">
+                            <label>Min Pump Wear - %</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="350" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Max Pump Wear - %</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Opt Pump Wear - %</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Scale Type:</label>
+                            <select class="multisteps-form__select form-control">
+                                <option selected="selected">...</option>
+                                <option value="1">Lineal</option>
+                                <option value="2">Logarithmic</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-4 mt-4 mt-sm-0">
+                            <div class="progress-info">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <span class="text-sm font-weight-bold ">Min: 40</span>
+                                    </div>
+    
+                                    <div class="col-lg-6">
+                                        <span class="text-sm font-weight-bold text-center">Max: 80</span>
+                                    </div>
+    
+                                </div>
+                                <div class="progress-percentage">
+                                    <span class="text-sm font-weight-bold">60</span>
+                                </div>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="60"
+                                    aria-valuemin="40" aria-valuemax="80" style="width: 60%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Motor Frequency -->
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-2">
+                            <label>Min Motor Frequency - Hz</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="350" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Max Motor Frequency - Hz</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Opt Motor Frequency - Hz</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Scale Type:</label>
+                            <select class="multisteps-form__select form-control">
+                                <option selected="selected">...</option>
+                                <option value="1">Lineal</option>
+                                <option value="2">Logarithmic</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-4 mt-4 mt-sm-0">
+                            <div class="progress-info">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <span class="text-sm font-weight-bold ">Min: 40</span>
+                                    </div>
+    
+                                    <div class="col-lg-6">
+                                        <span class="text-sm font-weight-bold text-center">Max: 80</span>
+                                    </div>
+    
+                                </div>
+                                <div class="progress-percentage">
+                                    <span class="text-sm font-weight-bold">{{object_list.data.MotorFrequency}}</span>
+                                </div>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="60"
+                                    aria-valuemin="40" aria-valuemax="80" style="width: {{object_list.data.MotorFrequency}}%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                          
+                    <!-- Motor Temperature -->
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-2">
+                            <label>Min Motor Temperature - F</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="350" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Max Motor Temperature - F</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Opt Motor Temperature - F</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Scale Type:</label>
+                            <select class="multisteps-form__select form-control">
+                                <option selected="selected">...</option>
+                                <option value="1">Lineal</option>
+                                <option value="2">Logarithmic</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-4 mt-4 mt-sm-0">
+                            <div class="progress-info">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <span class="text-sm font-weight-bold ">Min: 40</span>
+                                    </div>
+    
+                                    <div class="col-lg-6">
+                                        <span class="text-sm font-weight-bold text-center">Max: 80</span>
+                                    </div>
+    
+                                </div>
+                                <div class="progress-percentage">
+                                    <span class="text-sm font-weight-bold">{{object_list.data.MotorTemperature}}</span>
+                                </div>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="60"
+                                    aria-valuemin="40" aria-valuemax="80" style="width: {{object_list.data.MotorTemperature}}%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Current leak -->
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-2">
+                            <label>Min Current leak - %</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="350" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Max Current leak - %</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Opt Current leak - %</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Scale Type:</label>
+                            <select class="multisteps-form__select form-control">
+                                <option selected="selected">...</option>
+                                <option value="1">Lineal</option>
+                                <option value="2">Logarithmic</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-4 mt-4 mt-sm-0">
+                            <div class="progress-info">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <span class="text-sm font-weight-bold ">Min: 40</span>
+                                    </div>
+    
+                                    <div class="col-lg-6">
+                                        <span class="text-sm font-weight-bold text-center">Max: 80</span>
+                                    </div>
+    
+                                </div>
+                                <div class="progress-percentage">
+                                    <span class="text-sm font-weight-bold">60</span>
+                                </div>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="60"
+                                    aria-valuemin="40" aria-valuemax="80" style="width: 60%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-row d-flex mt-4">
+                        <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button"
+                            title="Next">Save</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Reservoir form -->
+<div class="row mt-4">
+    <div class="col-lg-12 mt-lg-0 mt-4">
+        <form class="multisteps-form__form">
+            <!--single form panel-->
+            <div class="card p-3 border-radius-xl bg-white js-active" data-animation="FadeIn">
+                <h5 class="font-weight-bolder mb-0">Reservoir Parameters</h5>
+                <p class="mb-0 text-sm">Expl..</p>
+                <div class="multisteps-form__content">
+                    
+                    <!-- Gas Volume Fraction -->
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-2">
+                            <label>Min Gas Volume Fraction - %</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="350" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Max Gas Volume Fraction - %</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Opt Gas Volume Fraction - %</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Scale Type:</label>
+                            <select class="multisteps-form__select form-control">
+                                <option selected="selected">...</option>
+                                <option value="1">Lineal</option>
+                                <option value="2">Logarithmic</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-4 mt-4 mt-sm-0">
+                            <div class="progress-info">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <span class="text-sm font-weight-bold ">Min: 40</span>
+                                    </div>
+    
+                                    <div class="col-lg-6">
+                                        <span class="text-sm font-weight-bold text-center">Max: 80</span>
+                                    </div>
+    
+                                </div>
+    
+    
+                                <div class="progress-percentage">
+                                    <span class="text-sm font-weight-bold">60</span>
+                                </div>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="60"
+                                    aria-valuemin="40" aria-valuemax="80" style="width: 60%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gas Liquid Ratio -->
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-2">
+                            <label>Min Gas Liquid Ratio - scf/bbl</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="350" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Max Gas Liquid Ratio - scf/bbl</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Opt Gas Liquid Ratio - scf/bbl</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Scale Type:</label>
+                            <select class="multisteps-form__select form-control">
+                                <option selected="selected">...</option>
+                                <option value="1">Lineal</option>
+                                <option value="2">Logarithmic</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-4 mt-4 mt-sm-0">
+                            <div class="progress-info">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <span class="text-sm font-weight-bold ">Min: 40</span>
+                                    </div>
+    
+                                    <div class="col-lg-6">
+                                        <span class="text-sm font-weight-bold text-center">Max: 80</span>
+                                    </div>
+    
+                                </div>
+                                <div class="progress-percentage">
+                                    <span class="text-sm font-weight-bold">60</span>
+                                </div>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="60"
+                                    aria-valuemin="40" aria-valuemax="80" style="width: 60%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pump Intake Pressure -->
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-2">
+                            <label>Min Pump Intake Pressure - psi</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="350" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Max Pump Intake Pressure - psi</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Opt Pump Intake Pressure - psi</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Scale Type:</label>
+                            <select class="multisteps-form__select form-control">
+                                <option selected="selected">...</option>
+                                <option value="1">Lineal</option>
+                                <option value="2">Logarithmic</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-4 mt-4 mt-sm-0">
+                            <div class="progress-info">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <span class="text-sm font-weight-bold ">Min: 40</span>
+                                    </div>
+    
+                                    <div class="col-lg-6">
+                                        <span class="text-sm font-weight-bold text-center">Max: 80</span>
+                                    </div>
+    
+                                </div>
+                                <div class="progress-percentage">
+                                    <span class="text-sm font-weight-bold">{{object_list.data.PumpIntakePressure}}</span>
+                                </div>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="60"
+                                    aria-valuemin="40" aria-valuemax="80" style="width: {{object_list.data.PumpIntakePressure}}%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-row d-flex mt-4">
+                        <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button"
+                            title="Next">Save</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Run Life form -->
+<div class="row mt-4">
+    <div class="col-lg-12 mt-lg-0 mt-4">
+        <form class="multisteps-form__form">
+            <!--single form panel-->
+            <div class="card p-3 border-radius-xl bg-white js-active" data-animation="FadeIn">
+                <h5 class="font-weight-bolder mb-0">Run Life Parameters</h5>
+                <p class="mb-0 text-sm">Expl..</p>
+                <div class="multisteps-form__content">
+                    
+                    <!--Run Life -->
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-2">
+                            <label>Min Run Life - days</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="350" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Max Run Life - days</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Opt Run Life - days</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Scale Type:</label>
+                            <select class="multisteps-form__select form-control">
+                                <option selected="selected">...</option>
+                                <option value="1">Lineal</option>
+                                <option value="2">Logarithmic</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-4 mt-4 mt-sm-0">
+                            <div class="progress-info">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <span class="text-sm font-weight-bold ">Min: 40</span>
+                                    </div>
+    
+                                    <div class="col-lg-6">
+                                        <span class="text-sm font-weight-bold text-center">Max: 80</span>
+                                    </div>
+    
+                                </div>
+    
+    
+                                <div class="progress-percentage">
+                                    <span class="text-sm font-weight-bold">{{object_list.failures.RunLife}}</span>
+                                </div>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="60"
+                                    aria-valuemin="40" aria-valuemax="80" style="width: {{object_list.failures.RunLife}}%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sand Percentge -->
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-2">
+                            <label>Min Sand Percentge - %</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="350" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Max Sand Percentge - %</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Opt Sand Percentge - %</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Scale Type:</label>
+                            <select class="multisteps-form__select form-control">
+                                <option selected="selected">...</option>
+                                <option value="1">Lineal</option>
+                                <option value="2">Logarithmic</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-4 mt-4 mt-sm-0">
+                            <div class="progress-info">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <span class="text-sm font-weight-bold ">Min: 40</span>
+                                    </div>
+    
+                                    <div class="col-lg-6">
+                                        <span class="text-sm font-weight-bold text-center">Max: 80</span>
+                                    </div>
+    
+                                </div>
+                                <div class="progress-percentage">
+                                    <span class="text-sm font-weight-bold">60</span>
+                                </div>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="60"
+                                    aria-valuemin="40" aria-valuemax="80" style="width: 60%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Harmonic Percentage -->
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-2">
+                            <label>Min Harmonic Percentage - %</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="350" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Max Harmonic Percentage - %</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Opt Harmonic Percentage - %</label>
+                            <input class="multisteps-form__input form-control" type="number" placeholder="410" />
+                        </div>
+                        <div class="col-12 col-sm-2 mt-4 mt-sm-0">
+                            <label>Scale Type:</label>
+                            <select class="multisteps-form__select form-control">
+                                <option selected="selected">...</option>
+                                <option value="1">Lineal</option>
+                                <option value="2">Logarithmic</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-4 mt-4 mt-sm-0">
+                            <div class="progress-info">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <span class="text-sm font-weight-bold ">Min: 40</span>
+                                    </div>
+    
+                                    <div class="col-lg-6">
+                                        <span class="text-sm font-weight-bold text-center">Max: 80</span>
+                                    </div>
+    
+                                </div>
+                                <div class="progress-percentage">
+                                    <span class="text-sm font-weight-bold">60</span>
+                                </div>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="60"
+                                    aria-valuemin="40" aria-valuemax="80" style="width: 60%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-row d-flex mt-4">
+                        <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button"
+                            title="Next">Save</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- IPR-->
+<div class="row mt-4">
+    <div class="col-lg-12 col-sm-12">
+        <div class="card h-100">
+            <div class="card-header pb-0 p-3">
+                <div class="d-flex justify-content-between">
+                    <h6 class="mb-0">IPR</h6>
+                </div>
+            </div>
+            <div class="card-body pb-0 p-3 mt-4">
+                <div class="row">
+                    <div class="col-8 text-start">
+                        <div class="chart">
+                            <canvas id="ipr-plot" class="chart-canvas" height="100"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-4 text-start">
+                        <h6>Actual Parameters</h6>
+                        <span class="badge badge-md badge-dot me-4 d-block text-start">
+                            <i class="bg-dark"></i>
+                            <span class="text-dark text-xs">Static Pressure</span> 100 psi
+                        </span>
+                        <span class="badge badge-md badge-dot me-4 d-block text-start">
+                            <i class="bg-dark"></i>
+                            <span class="text-dark text-xs">Operational Flow</span> 150 bbld
+                        </span>
+                        <span class="badge badge-md badge-dot me-4 d-block text-start">
+                            <i class="bg-dark"></i>
+                            <span class="text-dark text-xs">Operational Pressure</span> psi
+                        </span>
+                        <span class="badge badge-md badge-dot me-4 d-block text-start">
+                            <i class="bg-dark"></i>
+                            <span class="text-dark text-xs">Bubble point pressure</span> psi
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block JSscripts %}
+
+<script src="{% static '/assets/js/plugins/chartjs.min.js' %}"></script>
+    
+<script>
+
+//================ Motor Voltage ==========================
+var ctx1 = document.getElementById("ipr-plot").getContext("2d");
+
+var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke1.addColorStop(1, 'rgba(33,82,255,0.1)');
+    gradientStroke1.addColorStop(0.2, 'rgba(33,82,255,0.0)');
+    gradientStroke1.addColorStop(0, 'rgba(33,82,255,0)'); //purple colors
+    
+new Chart(ctx1, {
+    type: "line",
+    data: {
+        labels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+        datasets: [{
+            label: "s=6",
+            tension: 0.3,
+            pointRadius: 2,
+            pointBackgroundColor: "#cb0c9f",
+            borderColor: "#cb0c9f",
+            borderWidth: 2,
+            backgroundColor: gradientStroke1,
+            data: [500 ,450,420,380,350,310,250,200,170,0],
+            maxBarThickness: 6,
+            fill: true
+        }],
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+            legend: {
+                display: false,
+            }
+        },
+        interaction: {
+            intersect: true,
+            mode: 'index',
+        },
+        scales: {
+            y: {
+                grid: {
+                    drawBorder: true,
+                    display: true,
+                    drawOnChartArea: true,
+                    drawTicks: true,
+                },
+                ticks: {
+                    display: true
+                }
+            },
+            x: {
+                grid: {
+                    drawBorder: true,
+                    display: true,
+                    drawOnChartArea: true,
+                    drawTicks: true,
+                },
+                ticks: {
+                    color: '#252f40',
+                    padding: 10
+                }
+            },
+        },
+    },
+});
+</script>
+
+
+{% endblock JSscripts %}

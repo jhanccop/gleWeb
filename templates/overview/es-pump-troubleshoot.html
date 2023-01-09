@@ -1,0 +1,394 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} ESP - troubleshoot {% endblock title %}
+{% block company %} {{ CompanyName }} {% endblock company %}
+{% block app %} Overview {% endblock app %}
+{% block PumpType %} {{object_list.type}} - troubleshoot {% endblock PumpType %}
+{% block PumpName %} {{object_list.name}} {% endblock PumpName %}
+
+{% block content %}
+
+<!-- local navbar -->
+<div class="nav-wrapper position-relative end-0">
+    <ul class="nav nav-pills nav-fill pb-0 bg-transparent" role="tablist">
+
+        <!-- Operation -->
+        <li class="nav-item">
+            <a class="btn bg-gray-400 w-100 text-lg" href="/overview/electrical-submersible-pump/operation/{{object_list.name}}" role="button">
+                <i class="fas fa-project-diagram me-2 text-lg"></i>
+                Operation
+            </a>
+        </li>
+
+        <!-- Trends -->
+        <li class="nav-item">
+            <a class="btn bg-gray-400 w-100 text-lg" href="/overview/electrical-submersible-pump/trends/{{object_list.name}}" role="button">
+                
+                <i class="fas fa-chart-line me-2 text-sm"></i>Trends
+            </a>
+        </li>
+
+        <!-- Troubleshoot -->
+        <li class="nav-item">
+            <a class="btn bg-gradient-danger w-100 active text-lg" href="/overview/electrical-submersible-pump/troubleshoot/{{object_list.name}}" role="button"
+                aria-controls="Troubleshoot" aria-selected="false">
+                <i class="fas fa-toolbox me-2 text-sm"></i>
+                Troubleshoot
+            </a>
+        </li>
+
+        <!-- Optimization -->
+        <li class="nav-item">
+            <a class="btn bg-gray-400 w-100 text-lg" href="/overview/electrical-submersible-pump/optimization/{{object_list.name}}" role="button"
+                aria-controls="Optimization" aria-selected="false">
+                <i class="fas fa-chart-bar me-2 text-sm"></i>
+                Optimization
+            </a>
+        </li>
+
+        <!-- Test -->
+        <li class="nav-item">
+            <a class="btn bg-gray-400 w-100 text-lg" href="/overview/electrical-submersible-pump/test/{{object_list.name}}" role="button"
+                aria-controls="Test" aria-selected="false">
+                <i class="fas fa-wrench me-2 text-sm"></i>
+                Test
+            </a>
+        </li>
+
+        <!-- Inputs -->
+        <li class="nav-item">
+            <a class="btn bg-gray-400 w-100 text-lg" href="/overview/electrical-submersible-pump/inputs/{{object_list.name}}" role="tab"
+                aria-controls="Inputs" aria-selected="false">
+                <i class="fas fa-edit me-2 text-sm"></i>
+                Inputs
+            </a>
+        </li>
+
+    </ul>
+
+</div>
+
+<hr class="horizontal dark my-0">
+
+<!-- Consult form -->
+<div class="row mt-2">
+    <div class="col-xl-4 col-sm-2 mb-xl-0 mb-4">
+        <button class="btn bg-gradient-dark dropdown-toggle" type="button" id="dropdownImport"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            Today
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownImport">
+            <li><a class="dropdown-item" href="javascript:;">Yesterday</a></li>
+            <li><a class="dropdown-item" href="javascript:;">Last 7 days</a></li>
+            <li><a class="dropdown-item" href="javascript:;">Last 30 days</a></li>
+        </ul>
+    </div>
+
+    <div class="col-xl-4 col-sm-4 mb-xl-0 mb-4">
+        <div class="dropleft">
+            <form method="GET">{% csrf_token %}
+                <div class="row">
+                    <div class="col-xl-8 col-sm-8">
+                        <input class="form-control datetimepicker text-center" value="{{object_list.date}}" type="text" placeholder="today" id="dateKword" name="dateKword" />
+                    </div>
+                    <div class="col-xl-4 col-sm-4">
+                        <button class="btn bg-gradient-primary" type="submit"> Consult </button>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-sm-4 mb-xl-0 ">
+        <div class="numbers ">
+            <h6 class="font-weight-bolder float-end text-sx">Last Update:&nbsp;&nbsp;<span class="text-lg"  id = "LastUpdate"></span> </h6>
+        </div>
+        
+    </div>
+
+</div>
+
+<!-- Advance diagnosis TABLE -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <!-- Card header -->
+            <div class="card-header pb-0 p-3">
+                <h5 class="mb-0">Advance Diagnosis Table</h5>
+                <p class="text-sm mb-0">
+                    The Recommended Action should be executed by the Trip Attendance worker
+                </p>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-flush" id="datatable-basic1">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">DateTime</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Event</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Diagnosis</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Prediction</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">E.I.</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Recomendation</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Trip Attendance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for event in object_list.event %}
+                        <tr>
+                            <td class="text-sm font-weight-normal">{{event.DateCreate|safe}}</td>
+                            <td class="text-sm font-weight-normal">{{event.WellEvent}}</td>
+                            <td class="text-sm font-weight-normal">{{event.WellDiagnosis}}</td>
+                            <td class="text-sm font-weight-normal">{{event.WellPrediction}}</td>
+                            <td class="text-sm font-weight-normal">{{event.EI}}</td>
+                            <td class="text-sm font-weight-normal">{{event.WellRecomendation}}</td>
+                            <td class="text-sm font-weight-normal">{{event.WellTripAttendant}}</td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- time to trip and diagnosis statistics -->
+<div class="row mt-4">
+
+    <!-- diagnosis statistic -->
+    <div class="col-lg-4 col-sm-6">
+        <div class="card h-100">
+            <div class="card-header pb-0 p-3">
+                <div class="d-flex justify-content-between">
+                    <h6 class="mb-0">Diagnosis Statistics</h6>
+                </div>
+            </div>
+            <div class="card-body pb-0 p-3 mt-4">
+                <div class="row">
+                    <div class="col-12 text-start">
+                        <div class="chart">
+                            <canvas id="DiagnosisStatistics" class="chart-canvas" height="200"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="card-footer pt-0 pb-0 p-3 d-flex align-items-center">
+                <div class="w-60">
+                    <p class="text-sm">
+                        Statistics
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- time to trip -->
+    <div class="col-lg-8 col-sm-6 mt-sm-0 mt-4">
+        <div class="card">
+            <div class="card-header pb-0 p-3">
+                <div class="d-flex justify-content-between">
+                    <h6 class="mb-0">Time To Trip</h6>
+                    
+                </div>
+                <div class="d-flex align-items-center">
+                    <!-- 
+                    <span class="badge badge-md badge-dot me-4">
+                        <i class="bg-dark"></i>
+                        <span class="text-dark text-xs">Variable</span>
+                    </span>
+                    -->
+                </div>
+            </div>
+            <div class="card-body p-3">
+                <div class="chart">
+                    <canvas id="TimeToTrip" class="chart-canvas" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+- Timpe to trip plot / diagnosis statistics
+
+<hr class="horizontal dark mt-0">
+
+{% endblock content %}
+
+{% block JSscripts %}
+    <!-- SCRIPTS -->
+
+<script src="{% static 'assets/js/plugins/datatables.js' %}"></script>
+<!--Table 1-->
+<script>
+    const dataTableBasic1 = new simpleDatatables.DataTable("#datatable-basic1", {
+        searchable: true,
+        fixedHeight: true,
+        perPage: 5
+    });
+
+</script>
+
+<script src="{% static 'assets/js/plugins/chartjs.min.js' %} "></script>
+<script>
+    var ctx1 = document.getElementById("TimeToTrip").getContext("2d");
+    var ctx2 = document.getElementById("DiagnosisStatistics").getContext("2d");
+
+    var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke1.addColorStop(1, 'rgba(203,12,159,0.2)');
+    gradientStroke1.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+    gradientStroke1.addColorStop(0, 'rgba(203,12,159,0)'); //purple colors
+
+    var gradientStroke2 = ctx1.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke2.addColorStop(1, 'rgba(20,23,39,0.2)');
+    gradientStroke2.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+    gradientStroke2.addColorStop(0, 'rgba(20,23,39,0)'); //purple colors
+
+    var data_TTT = [];
+
+    '{% for well in object_list.event %}'
+    data_TTT.push({x: '{{well.DateCreate|safe}}',y: '{{well.TTT}}'});
+    '{% endfor %}'
+
+    // Time To Trip
+    new Chart(ctx1, {
+        type: "line",
+        data: {
+            //labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            datasets: [{
+                label: "variables",
+                tension: 0.4,
+                borderWidth: 0,
+                pointRadius: 2,
+                pointBackgroundColor: "#3A416F",
+                borderColor: "#3A416F",
+                borderWidth: 3,
+                backgroundColor: gradientStroke2,
+                fill: true,
+                data: data_TTT,
+                maxBarThickness: 6
+            }
+            ],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false,
+                }
+            },
+            interaction: {
+                intersect: false,
+                mode: 'index',
+            },
+            scales: {
+                y: {
+                    grid: {
+                        drawBorder: false,
+                        display: true,
+                        drawOnChartArea: true,
+                        drawTicks: false,
+                        borderDash: [5, 5]
+                    },
+                    ticks: {
+                        display: true,
+                        padding: 10,
+                        color: '#9ca2b7'
+                    }
+                },
+                x: {
+                    grid: {
+                        drawBorder: false,
+                        display: true,
+                        drawOnChartArea: true,
+                        drawTicks: true,
+                        borderDash: [5, 5]
+                    },
+                    ticks: {
+                        display: true,
+                        color: '#9ca2b7',
+                        padding: 10
+                    }
+                },
+            },
+        },
+    });
+
+    //console.log({{object_list.count|safe}});
+    // static chart
+    new Chart(ctx2, {
+        type: "doughnut",
+        data: {
+            labels: {{object_list.count.0|safe}},
+            datasets: [{
+                label: "Diagnosis",
+                weight: 9,
+                cutout: 40,
+                tension: 0.9,
+                pointRadius: 2,
+                borderWidth: 2,
+                hoverOffset: 4,
+                backgroundColor: ['#17c1e8', '#cb0c9f', '#3A416F', '#a8b8d8'],
+                data: {{object_list.count.1  | safe}},
+                fill: false
+            }],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                }
+            },
+            interaction: {
+                intersect: false,
+                mode: 'index',
+            },
+            scales: {
+                y: {
+                    grid: {
+                        drawBorder: false,
+                        display: false,
+                        drawOnChartArea: false,
+                        drawTicks: false,
+                    },
+                    ticks: {
+                        display: false
+                    }
+                },
+                x: {
+                    grid: {
+                        drawBorder: false,
+                        display: false,
+                        drawOnChartArea: false,
+                        drawTicks: false,
+                    },
+                    ticks: {
+                        display: false,
+                    }
+                },
+            },
+        },
+    });
+
+</script>
+
+<script src="{% static 'assets/js/plugins/flatpickr.min.js' %}"></script>
+<script>
+    if (document.querySelector('.datetimepicker')) {
+        flatpickr('.datetimepicker', {
+            allowInput: true,
+            mode: "range"
+        }); // flatpickr
+    }
+</script>
+    
+{% endblock JSscripts %}

@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} overview {% endblock title %}
+
+{% block company %} {{ CompanyName }} {% endblock company %}
+{% block companyMenu %} {{ CompanyName }} {% endblock companyMenu %}
+{% block app %} Overview {% endblock app %}
+{% block PumpType %}  {% endblock PumpType %}
+{% block PumpName %}  {% endblock PumpName %}
+
+{% block content %}
+
+<!-- ESP TABLE -->
+
+<div class="row">
+    <div class="col-12">
+        <div class="card ">
+            <!-- Card header -->
+            <div class="card-header pb-0 p-3">
+                <div class="d-lg-flex">
+                    <div>
+                        <h5 class="mb-0">ESP</h5>
+                        <p class="text-sm mb-0">
+                            Electric Submersible Pump
+                        </p>
+                    </div>
+                    <div class="ms-auto my-auto mt-lg-0 mt-4">
+                        <div class="ms-auto my-auto">
+                            <button class="btn bg-gradient-warning btn-sm mb-0 export" data-type="csv" type="button">
+                                <span class="btn-inner--icon"><i class="fas fa-file-csv text-lg"></i> </span>
+                                <span class="btn-inner--text">&nbsp;&nbsp;&nbsp;Export CSV</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card body -->
+            <div class="table-responsive">
+                <table class="table table-flush" id="datatable-basic1">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Field</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Motor Current</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Motor Temperature</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Motor Frequency</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Head Pressure</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Run Life</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Production</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">E.I.</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Event</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Design</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for well in object_list.espData %}
+                        <tr>
+                            <td class="text-sm font-weight-normal text-center">
+                                {% if well.Available != none %}
+                                <a href="/overview/electrical-submersible-pump/operation/{{well.PumpName}}">
+                                    <i class="fa fa-square {% if well.Available %} text-success {% else %} text-secondary {% endif %} text-lg"></i>
+                                </a>
+                                {% endif %}
+                            </td>
+                            <td class="text-sm font-weight-normal">
+                                
+                                <a href="/overview/electrical-submersible-pump/operation/{{well.PumpName}}">{{well.PumpName}}</a>
+                            </td>
+                            <td class="text-sm font-weight-normal">{{well.Field}}</td>
+                            <td class="text-sm font-weight-normal">{{well.MotorCurrent}}</td>
+                            <td class="text-sm font-weight-normal">{{well.MotorTemperature}}</td>
+                            <td class="text-sm font-weight-normal">{{well.MotorFrequency}}</td>
+                            <td class="text-sm font-weight-normal">{{well.HeadPressure}}</td>
+                            <td class="text-sm font-weight-normal">--</td>
+                            <td class="text-sm font-weight-normal">--</td>
+                            <td class="text-sm font-weight-normal">{{well.EI}}</td>
+                            <td class="text-sm font-weight-normal">{{well.WellEvent}}</td>
+                            <td class="text-sm font-weight-normal">--</td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SRP TABLE -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <!-- Card header -->
+            <div class="card-header pb-0 p-3">
+                <div class="d-lg-flex">
+                    <div>
+                        <h5 class="mb-0">SRP</h5>
+                        <p class="text-sm mb-0">
+                            Sucker Rod Pump
+                        </p>
+                    </div>
+                    <div class="ms-auto my-auto mt-lg-0 mt-4">
+                        <div class="ms-auto my-auto">
+                            <button class="btn bg-gradient-warning btn-sm mb-0 export2" data-type="csv" type="button">
+                                <span class="btn-inner--icon"><i class="fas fa-file-csv text-lg"></i> </span>
+                                <span class="btn-inner--text">&nbsp;&nbsp;&nbsp;Export CSV</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card body -->
+            <div class="table-responsive">
+                <table class="table table-flush" id="datatable-basic2">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Field</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Last update</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Head Pressure</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">SPM</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pump Fill</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Diagnosis</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for well in object_list.rodpumpData %}
+                        <tr>
+                            <td class="text-sm font-weight-normal text-center">
+                                {% if well.Available != none %}
+                                <a href="/overview/socker-rod-pump/{{well.PumpName}}">
+                                    <i class="fa fa-square {% if well.Available %} text-success {% else %} text-secondary {% endif %} text-lg"></i>
+                                </a>
+                                {% endif %}
+                            </td>
+                            <td class="text-sm font-weight-normal">
+                                
+                                <a href="/overview/socker-rod-pump/{{well.PumpName}}">{{well.PumpName}}</a>
+                            </td>
+                            <td class="text-sm font-weight-normal">{{well.Field}}</td>
+                            <td class="text-sm font-weight-normal">{{well.LastUpdate|date:'Y-m-d H:i'}}</td>
+                            <td class="text-sm font-weight-normal">{{well.PIP}}</td>
+                            <td class="text-sm font-weight-normal">{{well.SPM}}</td>
+                            <td class="text-sm font-weight-normal">{{well.PumpFill}}</td>
+                            <td class="text-sm font-weight-normal">{{well.Diagnosis}}</td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block JSscripts %}
+
+<script src="{% static 'assets/js/plugins/datatables.js' %}"></script>
+
+<!--Tables script-->
+<script>
+
+    // ================= Table 1
+    const dataTableBasic1 = new simpleDatatables.DataTable("#datatable-basic1", {
+        searchable: true,
+        fixedHeight: true,
+        perPage: 5
+    });
+
+    document.querySelectorAll(".export").forEach(function(el) {
+      el.addEventListener("click", function(e) {
+        var type = el.dataset.type;
+
+        var data = {
+          type: type,
+          filename: "gle-esp-" + type,
+        };
+
+        if (type === "csv") {
+          data.columnDelimiter = ",";
+        }
+
+        dataTableBasic1.export(data);
+      });
+    });
+
+    // ================= Table 2
+    const dataTableBasic2 = new simpleDatatables.DataTable("#datatable-basic2", {
+        searchable: true,
+        fixedHeight: true,
+        perPage: 5
+    });
+
+    document.querySelectorAll(".export2").forEach(function(el) {
+      el.addEventListener("click", function(e) {
+        var type = el.dataset.type;
+
+        var data = {
+          type: type,
+          filename: "gle-esp-" + type,
+        };
+
+        if (type === "csv") {
+          data.columnDelimiter = ",";
+        }
+
+        dataTableBasic2.export(data);
+      });
+    });
+
+</script>
+
+<script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+        var options = {
+            damping: '0.5'
+        }
+        Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+</script>
+
+{% endblock JSscripts %}
+
+
+
+
+{% endblock content %}
